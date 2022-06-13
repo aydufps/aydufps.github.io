@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Insumo</title>
+    <link rel="stylesheet" href="../css/admInsumo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="card-footer container-fluid">
+        <h2>Gestion de finca ganadera</h2>
+    </div>
+    <div class="d-flex">
+        <div id="sidebar-container" class="card-header">
+            <div class="logo">
+                <h4>Administrador</h4>
+            </div>
+            <div class="dropdown-divider "></div>
+            <div class="menu">
+                <a href="index.html" class="d-block "><i class="fas fa-th mr-2"></i>Inicio</a>
+                <a href="admAnimal.html" class="d-block "><i class="fas fa-cow mr-2"></i>Animales</a>
+                <a href="admInsumos.html" class="d-block "><i class="fas fa-chart-bar mr-2"></i>Insumo</a>
+                <a href="admPersonal.html" class="d-block "><i class="fas fa-users mr-2"></i>Personal</a>
+            </div>
+            <div class="CerrarSesion">
+                <a href="" class="d-block "><i class="fas fa-sign-in mr-2"></i>Cerrar Sesion</a>
+            </div>
+        </div>
+        <!-- contenido Insumos -->
+        <div class="contenedor container-fluid"><br>
+            <div class="row"><br>
+                <div class="col-md-8">
+                    <h3>Insumos</h3>
+                    <a href="index.html">Inicio / <a href="admInsumos.html">Insumos</a></a>
+                </div>
+                <div class="col-md-4 justify-content-center ">
+                    <a class="float-right mr-3" data-toggle="modal" href="#ventana1" id="añadir-insumo">
+                        <button class="float-right btn btn-primary" id="boton-añadir-insumo">Añadir +</button>
+                    </a>
+                </div>
+            </div><br>
+            <div class="card col-sm-12 table-responsive-ms"><br>
+                <table class="table table-striped table-bordered">
+                    <thead style="text-align: center;">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Codigo</th>
+                            <th>Unidades</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-table-insumo">
+                        <tr>
+                            <td>1</td>
+                            <td>vitamina para la piel</td>
+                            <td>001</td>
+                            <td>15</td>
+                            <td>
+                                <div>
+                                    <button class="btn btn-withed text-align-center" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Editar</a>
+                                        <a class="dropdown-item" href="#">Eliminar</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="modal fade" id="ventana1" style="margin-top: 90px;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title justify-content-sm-center" id="exampleModalLabel">
+                                Nuevo insumo</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body card container-fluid">
+                            <div class="row">
+                                <div class="col-md-8 form-group">
+                                    <label for="insumo" class="form-label"><Strong>Nombre</Strong></label>
+                                    <input type="text" name="insumo" id="nombre-inusumo"
+                                        placeholder="Digite el nombre del insumo" class="form-control">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label for="cantida" class="form-label"><strong>Cantidad</strong></label>
+                                    <input type="text" class="form-control" id="cantidad-insumo"
+                                        onkeypress="return solonumeros(event)"
+                                        placeholder="Digite la cantidad del insumo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="guardar-guardar">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

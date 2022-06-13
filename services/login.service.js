@@ -3,8 +3,9 @@ async function login() {
     email: document.querySelector("#correo").value,
     clave: document.querySelector("#clave").value,
   };
-  let { ok } = await post("login", data);
-  if (ok) {
+  let usuario = await post("login", data);
+  if (usuario) {
+    localStorage.setItem("usuario", JSON.stringify(usuario));
     window.location.replace("../../index.html");
   }
 }
