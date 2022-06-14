@@ -1,5 +1,5 @@
 async function obtenerAnimales() {
-  let data = await fetch("https://aydfincas.herokuapp.com/animales", {
+  let data = await fetch(API + "animales", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

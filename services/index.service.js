@@ -39,49 +39,49 @@ async function iniciarPagina() {
 }
 
 async function cargarVistaGestionAnimal() {
-  fetch("/vistas/animales/index.html")
-    .then((response) => response.text())
-    .then((html) => addView(html))
-    .then(() => obtenerAnimales())
-    .then((data) => {
-      let ht = data.map(
-        (u, i) => `<tr>
-     <td>${u.nombre}</td>
-     <td>${u.detalles}</td>
-     <td>${u.fecha_nacimiento}</td>
-     <td>${u.estado ? "Activa" : "Inactiva"}</td>
-   </tr>`
-      );
-      document.querySelector("#animales-body").innerHTML = ht;
-    })
-    .then(() => {
-      new JSTable("#animals-table", {
-        sortable: true,
-        searchable: true,
-        labels: {
-          placeholder: "Buscar...",
-          perPage: "Entradas por pagina",
-          noRows: "No hay entradas",
-          info: "Mostrando {start} / {end} de {rows} entradas",
-          loading: "Loading...",
-          infoFiltered:
-            "Mostrando {start} / {end} de {rows} entradas (filtrado de {rowsTotal} entradas)",
-        },
-        columns: [
-          {
-            select: 0,
-            sortable: true,
-            sort: "asc",
-            searchable: true,
-            render: function (cell, idx) {
-              let data = cell.innerHTML;
-              return data;
-            },
+  try {
+    const url = "/vistas/animales/index.html";
+    const html = await fetch(url).then((r) => r.text());
+    const animales = await obtenerAnimales();
+    let filas = animales.map(
+      (u, i) => `<tr>
+                    <td>${u.nombre}</td>
+                    <td>${u.detalles}</td>
+                    <td>${u.fecha_nacimiento}</td>
+                    <td>${u.estado ? "Activa" : "Inactiva"}</td>
+                  </tr>`
+    );
+    document.querySelector("#contenido-dinamico").innerHTML = html;
+    document.querySelector("#animales-body").innerHTML = filas;
+    new JSTable("#animals-table", {
+      sortable: true,
+      searchable: true,
+      labels: {
+        placeholder: "Buscar...",
+        perPage: "{select} Entradas por pagina",
+        perPageSelect: [5, 10, 15, 20, 25],
+        noRows: "No hay entradas",
+        info: "Mostrando {start} / {end} de {rows} entradas",
+        loading: "Loading...",
+        infoFiltered:
+          "Mostrando {start} / {end} de {rows} entradas (filtrado de {rowsTotal} entradas)",
+      },
+      columns: [
+        {
+          select: 0,
+          sortable: true,
+          sort: "asc",
+          searchable: true,
+          render: function (cell, idx) {
+            let data = cell.innerHTML;
+            return data;
           },
-        ],
-      });
-    })
-    .catch((err) => {});
+        },
+      ],
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 window.onload = async function () {
