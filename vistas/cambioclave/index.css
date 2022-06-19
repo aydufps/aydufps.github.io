@@ -1,0 +1,13 @@
+#contenedor{
+    width: 40%;
+    height: 50%;
+    margin-top: 15%;
+}
+
+h2{
+    text-align: center;
+}
+
+#Enviar-clave{
+    float: right;
+}

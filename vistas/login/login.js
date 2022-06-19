@@ -1,5 +1,4 @@
 async function login() {
-  alert("ss");
   var usuario = document.querySelector("#correo").value;
   var clave = document.querySelector("#clave").value;
 
@@ -11,7 +10,5 @@ async function login() {
     }),
   });
 
-  return console.log(res);
+  return res;
 }
-
-//document.getElementById("btn-submit").addEventListener("click", login, true);
