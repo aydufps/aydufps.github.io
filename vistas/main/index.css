@@ -131,3 +131,30 @@ ul li {
 #sidebar-container {
   border-right: 1px solid #d9d9d9;
 }
+
+#section_path a {
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+#section_path a:hover {
+  cursor: pointer;
+}
+
+table {
+  font-size: small;
+  font-weight: 900;
+}
+
+* {
+  font-family: "Rubik", sans-serif;
+  font-weight: bold;
+}
+
+#section_path h3 {
+  font-weight: bold;
+}
+
+.dt-sorter {
+  font-weight: bold;
+}

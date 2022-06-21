@@ -1,47 +1,93 @@
-<div class="contenedor container-fluid"><br>
-    <div class="row"><br>
-        <div class="col-md-10">
-            <h3>Enfermedades</h3>
-            <a href="index.html">Inicio / <a href="admInsumos.html">Enfermedades</a></a>
-        </div>
-        <div class="col-md-2 justify-content-center ">
-            <a class="float-right mr-3" data-toggle="modal" href="#ventana1" id="añadir-insumo">
-                <button class="float-right btn btn-primary" id="boton-añadir-enfermedad">Añadir +</button>
-            </a>
-        </div>
-    </div><br>
-    <div class="modal fade" id="ventana1" style="margin-top: 90px;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title justify-content-sm-center" id="exampleModalLabel">
-                        Agregar Enfermedad</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body card container-fluid">
-                    <div class="row">
-                        <div class="col-md-12 form-group">
-                            <label for="nombre-enfermedad" class="col-md-3 form-label"><Strong>Nombre:</Strong></label>
-                            <input type="text" name="nombre-enfermedad" id="nombre-enfermedad"
-                                placeholder="Digite el nombre de la enfermedad" class="form-control">
-                        </div>
-                    </div><hr>
-                    <div class="row">
-                        <div class="col-md-12 form-group">
-                            <label for="detalle-enfermedad" class="form-label"><strong>Detalles</strong></label>
-                            <textarea name="detalle" id="detalle-enfermedad" cols="3" rows="5" class="form-control"
-                                placeholder="Detalles de la enfermedad"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="guardar-enfermedad"
-                        data-dismiss="modal">Guardar</button>
-                </div>
-            </div>
-        </div>
+<div class="contenedor container-fluid">
+  <br />
+  <div class="row">
+    <br />
+    <div class="col-md-10" id="section_path">
+      <h3>Enfermedades</h3>
+      <a>Inicio / <a>Enfermedades</a></a>
     </div>
+    <div class="col-md-2 justify-content-center">
+      <a
+        class="float-right mr-3"
+        data-toggle="modal"
+        href="#ventana1"
+        id="añadir-insumo"
+      >
+        <button
+          class="float-right btn btn-primary"
+          id="boton-añadir-enfermedad"
+        >
+          Añadir +
+        </button>
+      </a>
+    </div>
+  </div>
+  <br />
+  <div class="modal fade" id="ventana1" style="margin-top: 90px">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3
+            class="modal-title justify-content-sm-center"
+            id="exampleModalLabel"
+          >
+            Agregar Enfermedad
+          </h3>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body card container-fluid">
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="nombre-enfermedad" class="col-md-3 form-label"
+                ><strong>Nombre:</strong></label
+              >
+              <input
+                type="text"
+                name="nombre-enfermedad"
+                id="nombre-enfermedad"
+                placeholder="Digite el nombre de la enfermedad"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-12 form-group">
+              <label for="detalle-enfermedad" class="form-label"
+                ><strong>Detalles</strong></label
+              >
+              <textarea
+                name="detalle"
+                id="detalle-enfermedad"
+                cols="3"
+                rows="5"
+                class="form-control"
+                placeholder="Detalles de la enfermedad"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="guardar-enfermedad"
+            data-dismiss="modal"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

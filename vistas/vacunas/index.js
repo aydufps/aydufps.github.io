@@ -76,6 +76,7 @@ async function cargarVistaGestionVacunas() {
                         <td>${u.id}</td>
                         <td>${u.nombre}</td>
                         <td>${u.detalles}</td>
+                        <td>${u.unidades}</td>
                         <td>${u.create_at}</td>
                         <td>${u.fecha_vencimiento_lote}</td>
                       </tr>`

@@ -86,7 +86,7 @@ async function guardaridAnimal(id) {
   localStorage.setItem("idEliminar", id);
 }
 
-async function eliminarAnimal(){
+async function eliminarAnimal() {
   const id = localStorage.getItem("idEliminar");
   fetch("https://aydfincas.herokuapp.com/animal/" + id, {
     method: "DELETE",
@@ -99,6 +99,61 @@ async function eliminarAnimal(){
   });
 }
 
+async function borraridAnimal() {
+  localStorage.removeItem("idEliminar");
+}
+
+async function agregarSelectVacuna() {
+  var selectVacunaAnimal = document.getElementById("selected-vacuna");
+  const vacunas = await obtenerVacunas();
+  if (selectVacunaAnimal.length == 1) {
+    for (let index = 0; index < vacunas.length; index++) {
+      if (vacunas[index].unidades > 0) {
+        const optionVacuna = document.createElement("option");
+        optionVacuna.value = vacunas[index].id;
+        optionVacuna.text = vacunas[index].nombre;
+        selectVacunaAnimal.appendChild(optionVacuna);
+      }
+    }
+  }
+}
+
+async function guardarVacunaAnimal() {
+  id_vacuna = document.querySelector("#selected-vacuna").value;
+  console.log(id_vacuna);
+  let data = {
+    animal_id: localStorage.getItem("idEliminar"),
+    vacuna_id: document.querySelector("#selected-vacuna").value,
+  };
+  fetch("https://aydfincas.herokuapp.com/animales/vacunas", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
+  const vacunas = await obtenerVacunas();
+  for (let index = 0; index < vacunas.length; index++) {
+    if (id_vacuna == vacunas[index].id) {
+      let data = {
+        id: vacunas[index].id,
+        nombre: vacunas[index].nombre,
+        detalles: vacunas[index].detalles,
+        estado: vacunas[index].estado,
+        unidades: vacunas[index].unidades - 1,
+        fecha_vencimiento_lote: vacunas[index].fecha_vencimiento_lote,
+      };
+      fetch("https://aydfincas.herokuapp.com/vacunas", {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => res.json());
+    }
+  }
+}
+
 async function cargaContenidoAnimal() {
   try {
     const url = `/vistas/${componentanimal}/index.html`;
@@ -109,21 +164,27 @@ async function cargaContenidoAnimal() {
     document.querySelector("#contenido-dinamico").innerHTML = html;
     document.querySelector("#encabezado-dinamico").innerHTML = htmlEncabezado;
     document
-    .querySelector("#btnAnimales")
-    .addEventListener("click", cargarVistaGestionAnimal);
+      .querySelector("#btnAnimales")
+      .addEventListener("click", cargarVistaGestionAnimal);
     document
       .querySelector("#guardar-animal")
       .addEventListener("click", guardarAnimal);
     document
+      .querySelector("#no-eliminar-animal")
+      .addEventListener("click", borraridAnimal);
+    document
       .querySelector("#si-eliminar-animal")
       .addEventListener("click", eliminarAnimal);
-
+    document
+      .querySelector("#guardar-vacuna-animal")
+      .addEventListener("click", guardarVacunaAnimal);
   } catch (error) {
     console.log(error);
     alert("no entra al sistema de encabesado");
     alert("dekmdkemdkm");
   }
   agregarAnimalSelect();
+  agregarSelectVacuna();
 }
 
 async function cargarVistaGestionAnimal() {
@@ -132,6 +193,10 @@ async function cargarVistaGestionAnimal() {
     const url = "/vistas/animales/index.html";
     const html = await fetch(url).then((r) => r.text());
     const animales = await obtenerAnimales();
+    const nombrevacuna = {};
+    for (let index = 0; index < animales.length; index++) {
+      console.log(animales[index].vacunas);
+    }
     //console.log(animales);
     let filas = animales.map(
       (u, i) => `<tr>
@@ -142,12 +207,24 @@ async function cargarVistaGestionAnimal() {
                     <td>${u.madre_id}</td>
                     <td>${u.padre_id}</td>
                     <td>${u.estado ? "Activa" : "Inactiva"}</td>
-                    <td>
+                    <td style="margin:center;">
+                        <a class="float-right mr-3" data-toggle="modal" href="#ventana3" id="buton-vacuna">
+                          <button class="float-right btn btn-primary" id="boton-agregar-vacuna" onclick="guardaridAnimal(${
+                            u.id
+                          })">
+                          <i class="fas fa-syringe"></i>
+                          </button>
+                        </a>
                         <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar">
-                          <button class="float-right btn btn-danger" id="boton-eliminar-animal" onclick="guardaridAnimal(${u.id})">
+                          <button class="float-right btn btn-danger" id="boton-eliminar-animal" onclick="guardaridAnimal(${
+                            u.id
+                          })">
                             <i class="fas fa-trash-alt"></i>
                           </button>
                         </a>
+                    </td>
+                    <td>
+                        
                     </td>
                   </tr>`
     );
@@ -203,6 +280,7 @@ window.onload = async function () {
     .querySelector("#btnVacunas")
     .addEventListener("click", cargarVistaGestionVacunas);
 };
+
 document
   .querySelector("#btnCerrarSesion")
   .addEventListener("click", cerrarSesion);
