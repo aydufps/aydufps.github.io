@@ -64,13 +64,12 @@ async function agregarAnimalSelect() {
 async function guardarAnimal() {
   let data = {
     nombre: document.querySelector("#nombre-animal").value,
-    genero: document.querySelector("#genero-animal").value,
+    genero: document.querySelector("#genero-animal").value == "true",
     detalles: document.querySelector("#detalles-animal").value,
-    padre_id: document.querySelector("#select-padre").value,
-    madre_id: document.querySelector("#select-madre").value,
+    padre_id: document.querySelector("#select-padre").value || null,
+    madre_id: document.querySelector("#select-madre").value || null,
     fecha_nacimiento: document.getElementById("fecha-nacimiento-animal").value,
   };
-
   let animal = await fetch("https://aydfincas.herokuapp.com/animales", {
     method: "POST",
     body: JSON.stringify(data),
@@ -79,7 +78,6 @@ async function guardarAnimal() {
     },
   }).then((res) => res.json());
   cargarVistaGestionAnimal();
-  console.log(animal);
 }
 
 async function guardaridAnimal(id) {
@@ -194,9 +192,9 @@ async function cargarVistaGestionAnimal() {
     const html = await fetch(url).then((r) => r.text());
     const animales = await obtenerAnimales();
     const nombrevacuna = {};
-    for (let index = 0; index < animales.length; index++) {
+    /* for (let index = 0; index < animales.length; index++) {
       console.log(animales[index].vacunas);
-    }
+    } */
     //console.log(animales);
     let filas = animales.map(
       (u, i) => `<tr>
@@ -204,8 +202,8 @@ async function cargarVistaGestionAnimal() {
                     <td>${u.detalles}</td>
                     <td>${u.fecha_nacimiento}</td>
                     <td>${u.genero ? "Macho" : "Hembra"}</td>
-                    <td>${u.madre_id}</td>
-                    <td>${u.padre_id}</td>
+                    <td>${u.madre_id == null ? "N/A" : u.madre_id}</td>
+                    <td>${u.padre_id == null ? "N/A" : u.padre_id}</td>
                     <td>${u.estado ? "Activa" : "Inactiva"}</td>
                     <td style="margin:center;">
                         <a class="float-right mr-3" data-toggle="modal" href="#ventana3" id="buton-vacuna">
