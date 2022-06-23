@@ -28,8 +28,8 @@
         <div class="modal-body card container-fluid">
           <div class="row">
             <div class="col-md-6 form-group">
-              <label for="insumo" class="form-label"><strong>Nombre</strong></label>
-              <input type="text" name="insumo" id="nombre-personal" placeholder="Digite el nombre"
+              <label for="nombre-personal" class="form-label"><strong>Nombre</strong></label>
+              <input type="text" name="nombre-personal" id="nombre-personal" placeholder="Digite el nombre"
                 class="form-control" />
             </div>
             <br />
@@ -82,7 +82,7 @@
           </button>
         </div>
         <div class="modal-body card container-fluid">
-          <h5 >¿Esta seguro de elminar el Usuario?</h5>
+          <h5>¿Esta seguro de elminar el Usuario?</h5>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="no-eliminar-usuario">
               No
@@ -95,4 +95,56 @@
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Editar Usuario -->
+  <div class="modal fade" id="ventana3" style="margin-top: 110px">
+    <div class="modal-dialog" id="contenido-modal">
+      <div class="modal-content">
+        <div class="card-header">
+          <div class="modal-header">
+            <h3 class="modal-title justify-content-sm-center" id="exampleModalLabel">
+              EDITAR USUARIO
+            </h3>
+            <button type="button" class="close btn btn-whited" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body card container-fluid">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="actulizar-nombre" class="form-label"><strong>Nombre</strong></label>
+                <input type="text" name="actulizar-nombre" id="actulizar-nombre" placeholder="Digite el nombre"
+                  class="form-control" />
+              </div>
+              <br />
+              <div class="col-md-6 form-group">
+                <label for="actualizar-rol" class="form-label"><strong>Rol</strong></label>
+                <select name="actualizar-rol" id="actualizar-rol" class="form-control">
+                  <option value="1">Administrador</option>
+                  <option value="2">Capataz</option>
+                  <option value="3">veterinario</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="actualizar-correo" class="form-label"><strong>Email</strong></label>
+                  <input type="email" aria-label="" class="form-control" id="actualizar-correo" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="no-eliminar-usuario">
+              No
+            </button>
+            <button type="button" class="btn btn-primary" id="si-eliminar-usuario" data-dismiss="modal">
+              Si
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><br>

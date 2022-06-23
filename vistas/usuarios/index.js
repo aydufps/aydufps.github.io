@@ -30,18 +30,29 @@ async function guardarUsuario() {
   console.log(usuario);
 }
 
-async function borraridAnimal() {
+async function borraridUsuario() {
   localStorage.removeItem("idEliminar");
 }
 
-async function guardaridUsuario(id) {
+async function guardarIdUsuario(id) {
   localStorage.setItem("idEliminar", id);
 }
 
-async function eliminarUsuario() {
+async function actualizarInformacionUsuario() {
+  alert("wwwwwwwwwwwwwwwwwwww");
   const id = localStorage.getItem("idEliminar");
   let usuario = await obtenerUsuarios();
-  console.log(usuario);
+  for (let index = 0; index < usuario.length; index++) {
+    if (usuario[index].id == id) {
+      document.querySelector("#actulizar-nombre").innerHTML = usuario[index].nombre;
+      document.querySelector("#actualizar-correo").innerHTML = usuario[index].correo;
+    }
+  }
+}
+
+async function eliminarUsuario() {
+  var id = localStorage.getItem("idEliminar");
+  const usuario = await obtenerUsuarios();
   for (let index = 0; index < usuario.length; index++) {
     if (usuario[index].id == id) {
       if (usuario[index].rol_id != 1) {
@@ -55,7 +66,7 @@ async function eliminarUsuario() {
           localStorage.removeItem("idEliminarUsuario");
         })
       } else {
-        alert("Es un usuario administardor");
+        alert("Es un usuario Administardor");
       }
     }
   }
@@ -76,11 +87,10 @@ async function cargaContenidoUsuario() {
       .addEventListener("click", guardarUsuario);
     document
       .querySelector("#no-eliminar-usuario")
-      .addEventListener("click", borraridAnimal);
+      .addEventListener("click", borraridUsuario);
     document
       .querySelector("#si-eliminar-usuario")
       .addEventListener("click", eliminarUsuario);
-
   } catch (error) {
     console.log(error);
     alert("no entra al sistema de encabesado");
@@ -110,13 +120,12 @@ async function cargarVistaGestionUsuarios() {
                         <td>${u.estado ? "Activa" : "Inactiva"}</td>
                         <td style="margin:center;">
                             <a class="float-right mr-3" data-toggle="modal" href="#ventana3" id="buton-vacuna">
-                              <button class="float-right btn btn-primary" id="boton-agregar-vacuna" >
+                              <button class="float-right btn btn-primary" id="btn-editar-usuario" onclick="guardarIdUsuario(${u.id})">
                                 <i class="fas fa-edit"></i>
                               </button>
                             </a>
                             <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
-                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardaridAnimal(${u.id
-        })">
+                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdUsuario(${u.id})">
                                 <i class="fas fa-trash-alt"></i>
                               </button>
                             </a>
@@ -154,4 +163,10 @@ async function cargarVistaGestionUsuarios() {
   } catch (error) {
     console.log(error);
   }
+}
+
+window.onload = async function name(params) {
+  document
+      .querySelector("#btn-editar-usuario")
+      .addEventListener("click", actualizarInformacionUsuario);
 }
