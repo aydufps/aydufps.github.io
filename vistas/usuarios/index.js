@@ -76,7 +76,7 @@ async function cargaContenidoUsuario() {
   try {
     const url = `/vistas/${component}/index.html`;
     const html = await fetch(url).then((r) => r.text());
-    const urlEncabezado = `/vistas/${component}/encabezado.html`;
+    const urlEncabezado = `/vistas/${component}/Encabezado.html`;
     const htmlEncabezado = await fetch(urlEncabezado).then((r) => r.text());
 
     document.querySelector("#contenido-dinamico").innerHTML = html;
