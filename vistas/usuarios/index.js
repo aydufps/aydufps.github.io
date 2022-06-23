@@ -39,14 +39,29 @@ async function guardarIdUsuario(id) {
 }
 
 async function actualizarInformacionUsuario() {
-  alert("wwwwwwwwwwwwwwwwwwww");
-  const id = localStorage.getItem("idEliminar");
-  let usuario = await obtenerUsuarios();
-  for (let index = 0; index < usuario.length; index++) {
-    if (usuario[index].id == id) {
-      document.querySelector("#actulizar-nombre").innerHTML = usuario[index].nombre;
-      document.querySelector("#actualizar-correo").innerHTML = usuario[index].correo;
+  const usuarioId = localStorage.getItem("idEliminar");
+  var actualizarNombre = document.querySelector("#actulizar-nombre").value;
+  var actualizarCorreo = document.querySelector("#actualizar-correo").value;
+  var actualizarRoolis = document.querySelector("#actualizar-rol").value;
+  if (actualizarNombre != '' && actualizarCorreo != '' && actualizarRoolis != '') {
+    let data = {
+      id: usuarioId,
+      nombre: document.querySelector("#actulizar-nombre").value,
+      correo: document.querySelector("#actualizar-correo").value,
+      rol_id: document.querySelector("#actualizar-rol").value,
     }
+    fetch("https://aydfincas.herokuapp.com/usuarios", {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      cargarVistaGestionUsuarios();
+      localStorage.removeItem("idEliminarUsuario");
+    });
+  } else {
+    alert("Complete todos los cambios");
   }
 }
 
@@ -64,7 +79,7 @@ async function eliminarUsuario() {
         }).then((res) => {
           cargarVistaGestionUsuarios();
           localStorage.removeItem("idEliminarUsuario");
-        })
+        });
       } else {
         alert("Es un usuario Administardor");
       }
@@ -76,7 +91,7 @@ async function cargaContenidoUsuario() {
   try {
     const url = `/vistas/${component}/index.html`;
     const html = await fetch(url).then((r) => r.text());
-    const urlEncabezado = `/vistas/${component}/Encabezado.html`;
+    const urlEncabezado = `/vistas/${component}/encabezado.html`;
     const htmlEncabezado = await fetch(urlEncabezado).then((r) => r.text());
 
     document.querySelector("#contenido-dinamico").innerHTML = html;
@@ -91,6 +106,12 @@ async function cargaContenidoUsuario() {
     document
       .querySelector("#si-eliminar-usuario")
       .addEventListener("click", eliminarUsuario);
+    document
+      .querySelector("#si-actualizar-usuario")
+      .addEventListener("click", actualizarInformacionUsuario);
+    document
+      .querySelector("#no-actualizar-usuario")
+      .addEventListener("click", borraridUsuario);
   } catch (error) {
     console.log(error);
     alert("no entra al sistema de encabesado");
@@ -119,8 +140,8 @@ async function cargarVistaGestionUsuarios() {
                         <td>${u.rol_id}</td>
                         <td>${u.estado ? "Activa" : "Inactiva"}</td>
                         <td style="margin:center;">
-                            <a class="float-right mr-3" data-toggle="modal" href="#ventana3" id="buton-vacuna">
-                              <button class="float-right btn btn-primary" id="btn-editar-usuario" onclick="guardarIdUsuario(${u.id})">
+                            <a class="float-right mr-3" data-toggle="modal" href="#ventana3" >
+                              <button class="float-right btn btn-primary" onclick="guardarIdUsuario(${u.id})">
                                 <i class="fas fa-edit"></i>
                               </button>
                             </a>
@@ -160,13 +181,13 @@ async function cargarVistaGestionUsuarios() {
         },
       ],
     });
+
   } catch (error) {
     console.log(error);
   }
 }
 
-window.onload = async function name(params) {
-  document
-      .querySelector("#btn-editar-usuario")
-      .addEventListener("click", actualizarInformacionUsuario);
+
+window.onload = async function () {
+
 }
