@@ -207,16 +207,12 @@ async function cargarVistaGestionAnimal() {
                     <td>${u.estado ? "Activa" : "Inactiva"}</td>
                     <td style="margin:center;">
                         <a class="float-right mr-3" data-toggle="modal" href="#ventana3" id="buton-vacuna">
-                          <button class="float-right btn btn-primary" id="boton-agregar-vacuna" onclick="guardaridAnimal(${
-                            u.id
-                          })">
+                          <button class="float-right btn btn-primary" id="boton-agregar-vacuna" onclick="guardaridAnimal(${u.id})">
                           <i class="fas fa-syringe"></i>
                           </button>
                         </a>
                         <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar">
-                          <button class="float-right btn btn-danger" id="boton-eliminar-animal" onclick="guardaridAnimal(${
-                            u.id
-                          })">
+                          <button class="float-right btn btn-danger" id="boton-eliminar-animal" onclick="guardaridAnimal(${u.id})">
                             <i class="fas fa-trash-alt"></i>
                           </button>
                         </a>
