@@ -12,25 +12,6 @@ async function obtenerUsuarios() {
   }
 }
 
-async function cargaContenidoUsuario() {
-  try {
-    const url = `/vistas/${component}/index.html`;
-    const html = await fetch(url).then((r) => r.text());
-    const urlEncabezado = `/vistas/${component}/encabezado.html`;
-    const htmlEncabezado = await fetch(urlEncabezado).then((r) => r.text());
-
-    document.querySelector("#contenido-dinamico").innerHTML = html;
-    document.querySelector("#encabezado-dinamico").innerHTML = htmlEncabezado;
-
-    document
-      .querySelector("#guardar-personal")
-      .addEventListener("click", guardarUsuario);
-  } catch (error) {
-    console.log(error);
-    alert("no entra al sistema de encabesado");
-  }
-}
-
 async function guardarUsuario() {
   let data = {
     name: document.querySelector("#nombre-personal").value,
@@ -49,6 +30,63 @@ async function guardarUsuario() {
   console.log(usuario);
 }
 
+async function borraridAnimal() {
+  localStorage.removeItem("idEliminar");
+}
+
+async function guardaridUsuario(id) {
+  localStorage.setItem("idEliminar", id);
+}
+
+async function eliminarUsuario() {
+  const id = localStorage.getItem("idEliminar");
+  let usuario = await obtenerUsuarios();
+  console.log(usuario);
+  for (let index = 0; index < usuario.length; index++) {
+    if (usuario[index].id == id) {
+      if (usuario[index].rol_id != 1) {
+        fetch("https://aydfincas.herokuapp.com/usuario/" + id, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => {
+          cargarVistaGestionUsuarios();
+          localStorage.removeItem("idEliminarUsuario");
+        })
+      } else {
+        alert("Es un usuario administardor");
+      }
+    }
+  }
+}
+
+async function cargaContenidoUsuario() {
+  try {
+    const url = `/vistas/${component}/index.html`;
+    const html = await fetch(url).then((r) => r.text());
+    const urlEncabezado = `/vistas/${component}/encabezado.html`;
+    const htmlEncabezado = await fetch(urlEncabezado).then((r) => r.text());
+
+    document.querySelector("#contenido-dinamico").innerHTML = html;
+    document.querySelector("#encabezado-dinamico").innerHTML = htmlEncabezado;
+
+    document
+      .querySelector("#guardar-personal")
+      .addEventListener("click", guardarUsuario);
+    document
+      .querySelector("#no-eliminar-usuario")
+      .addEventListener("click", borraridAnimal);
+    document
+      .querySelector("#si-eliminar-usuario")
+      .addEventListener("click", eliminarUsuario);
+
+  } catch (error) {
+    console.log(error);
+    alert("no entra al sistema de encabesado");
+  }
+}
+
 async function cargarVistaGestionUsuarios() {
   cargaContenidoUsuario();
   try {
@@ -58,9 +96,9 @@ async function cargarVistaGestionUsuarios() {
     for (let index = 0; index < usuario.length; index++) {
       if (usuario[index].rol_id == 1) {
         usuario[index].rol_id = "Administrador";
-      } else if(usuario[index].rol_id == 2){
+      } else if (usuario[index].rol_id == 2) {
         usuario[index].rol_id = "Capataz";
-      }else{
+      } else {
         usuario[index].rol_id = "Veterinario";
       }
     }
@@ -70,7 +108,20 @@ async function cargarVistaGestionUsuarios() {
                         <td>${u.correo}</td>
                         <td>${u.rol_id}</td>
                         <td>${u.estado ? "Activa" : "Inactiva"}</td>
-                  </tr>`
+                        <td style="margin:center;">
+                            <a class="float-right mr-3" data-toggle="modal" href="#ventana3" id="buton-vacuna">
+                              <button class="float-right btn btn-primary" id="boton-agregar-vacuna" >
+                                <i class="fas fa-edit"></i>
+                              </button>
+                            </a>
+                            <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
+                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardaridAnimal(${u.id
+        })">
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                            </a>
+                        </td>
+                </tr>`
     );
     document.querySelector("#contenido-dinamico").innerHTML = html;
     document.querySelector(`#${component}-body`).innerHTML = filas;

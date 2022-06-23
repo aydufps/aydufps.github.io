@@ -1,7 +1,44 @@
-#contenedor{
-    width: 40%;
-    height: 50%;
-    margin-top: 10%;
+
+
+@import url("https://fonts.googleapis.com/css?family=Numans");
+
+html,
+body {
+    background-image: url("https://actualidadganadera.com/wp-content/uploads/2019/10/GANADO-CAMPECHE.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    font-family: "Numans", sans-serif;
+}
+
+.abs-center {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    width: 450px;
+    margin-left: 100px;
+    margin-top: auto;
+}
+
+.card {
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 500px;
+    background-color: rgb(255, 255, 255) !important;
+}
+
+h2 {
+    text-align: center;
+}
+
+#Enviar-clave {
+    float: right;
+    margin-left: 5px;
+}
+
+#cancelar-clave {
+    margin-left: 15px;
+    float: right;
 }
 
 h2{

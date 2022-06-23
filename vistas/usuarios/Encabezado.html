@@ -7,12 +7,7 @@
       <a>Inicio / <a>Personal</a></a>
     </div>
     <div class="col-md-2 justify-content-center">
-      <a
-        class="float-right mr-3"
-        data-toggle="modal"
-        href="#ventana1"
-        id="buton-añadir"
-      >
+      <a class="float-right mr-3" data-toggle="modal" href="#ventana1" id="buton-añadir">
         <button class="float-right btn btn-primary" id="boton-añadir-personal">
           Añadir +
         </button>
@@ -23,34 +18,19 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3
-            class="modal-title justify-content-sm-center"
-            id="exampleModalLabel"
-          >
+          <h3 class="modal-title justify-content-sm-center" id="exampleModalLabel">
             Nuevo Usuario
           </h3>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body card container-fluid">
           <div class="row">
             <div class="col-md-6 form-group">
-              <label for="insumo" class="form-label"
-                ><strong>Nombre</strong></label
-              >
-              <input
-                type="text"
-                name="insumo"
-                id="nombre-personal"
-                placeholder="Digite el nombre"
-                class="form-control"
-              />
+              <label for="insumo" class="form-label"><strong>Nombre</strong></label>
+              <input type="text" name="insumo" id="nombre-personal" placeholder="Digite el nombre"
+                class="form-control" />
             </div>
             <br />
             <div class="col-md-6 form-group">
@@ -66,12 +46,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="form-label"><strong>Email</strong></label>
-                <input
-                  type="email"
-                  aria-label=""
-                  class="form-control"
-                  id="email-personal"
-                />
+                <input type="email" aria-label="" class="form-control" id="email-personal" />
               </div>
             </div>
           </div>
@@ -87,14 +62,35 @@
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Cancelar
           </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            id="guardar-personal"
-            data-dismiss="modal"
-          >
+          <button type="button" class="btn btn-primary" id="guardar-personal" data-dismiss="modal">
             Guardar
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Eliminar usuario -->
+  <div class="modal fade" id="ventana2" style="margin-top: 110px">
+    <div class="modal-dialog" id="contenido-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title justify-content-sm-center" id="exampleModalLabel">
+            Eliminar Usuario
+          </h3>
+          <button type="button" class="close btn btn-whited" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body card container-fluid">
+          <h5 >¿Esta seguro de elminar el Usuario?</h5>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="no-eliminar-usuario">
+              No
+            </button>
+            <button type="button" class="btn btn-primary" id="si-eliminar-usuario" data-dismiss="modal">
+              Si
+            </button>
+          </div>
         </div>
       </div>
     </div>
