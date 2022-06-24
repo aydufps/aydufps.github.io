@@ -3,7 +3,6 @@ body {
 }
 
 #wrapper {
-  padding-left: 0;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -29,6 +28,24 @@ body {
   transition: all 0.5s ease;
 }
 
+#contenedor-sidebar {
+  background: #000;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  color: #fff;
+  height: 60px;
+}
+
+#titulo>h4 {
+  margin-left: -210px;
+  font: bold 36px Arial, Helvetica, sans-serif;
+  line-height: 60px;
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+}
+
 #wrapper.toggled #sidebar-wrapper {
   width: 250px;
 }
@@ -50,14 +67,14 @@ body {
   position: absolute;
   top: 0;
   width: 250px;
-  margin: 0;
+  margin: 50;
   padding: 0;
   list-style: none;
 }
 
 .sidebar-nav li {
-  text-indent: 20px;
-  line-height: 40px;
+  text-indent: 30px;
+  line-height: 50px;
 }
 
 .sidebar-nav li a {
@@ -68,7 +85,7 @@ body {
 
 .sidebar-nav li a:hover {
   text-decoration: none;
-  color: #fff;
+  color: rgb(226, 23, 23);
   background: rgba(255, 255, 255, 0.2);
 }
 
@@ -77,18 +94,18 @@ body {
   text-decoration: none;
 }
 
-.sidebar-nav > .sidebar-brand {
+.sidebar-nav>.sidebar-brand {
   height: 65px;
-  font-size: 18px;
+  font-size: 21px;
   line-height: 60px;
 }
 
-.sidebar-nav > .sidebar-brand a {
+.sidebar-nav>.sidebar-brand a {
   color: #999999;
 }
 
-.sidebar-nav > .sidebar-brand a:hover {
-  color: #fff;
+.sidebar-nav>.sidebar-brand a:hover {
+  color: rgb(255, 255, 255);
   background: none;
 }
 
@@ -96,28 +113,34 @@ body {
   #wrapper {
     padding-left: 0;
   }
+
   #wrapper.toggled {
     padding-left: 250px;
   }
+
   #sidebar-wrapper {
     width: 0;
   }
+
   #wrapper.toggled #sidebar-wrapper {
     width: 250px;
   }
+
   #page-content-wrapper {
     padding: 20px;
     position: relative;
   }
+
   #wrapper.toggled #page-content-wrapper {
     position: relative;
     margin-right: 0;
   }
 }
 
-ul > li :hover {
+ul>li :hover {
   cursor: pointer;
 }
+
 ul li {
   color: #d9d9d9;
 }
@@ -128,6 +151,7 @@ ul li {
   transition: 0.3s;
   border-radius: 6px;
 }
+
 #sidebar-container {
   border-right: 1px solid #d9d9d9;
 }
@@ -157,4 +181,12 @@ table {
 
 .dt-sorter {
   font-weight: bold;
+}
+
+/* #btnCerrarSesion{
+  margin-top: 320px;
+} */
+
+#rolLabel{
+  color: #000;
 }

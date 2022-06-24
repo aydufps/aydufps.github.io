@@ -12,6 +12,28 @@ async function obtenerInsumos() {
   }
 }
 
+async function guardarIdinsumo(id) {
+  localStorage.setItem("idEliminar", id);
+}
+
+async function eliminarInsumo() {
+  var id = localStorage.getItem("idEliminar");
+  const insumo = await obtenerInsumos();
+  for (let index = 0; index < insumo.length; index++) {
+    if (insumo[index].id == id) {
+      fetch("https://aydfincas.herokuapp.com/insumo/" + id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        cargarVistaGestionInsumos();
+        localStorage.removeItem("idEliminar");
+      });
+    }
+  }
+}
+
 async function guardarInsumo() {
   let data = {
     nombre: document.querySelector("#nombre-inusumo").value,
@@ -38,8 +60,11 @@ async function cargaContenidoInsumos() {
 
     document.querySelector("#contenido-dinamico").innerHTML = html;
     document.querySelector("#encabezado-dinamico").innerHTML = htmlEncabezado;
-    
+
     document.querySelector("#guardar-insumo").addEventListener("click", guardarInsumo);
+    
+    document.querySelector("#si-eliminar-insumo").addEventListener("click", eliminarInsumo);
+
   } catch (error) {
     console.log(error);
     alert("no entra al sistema de encabesado");
@@ -51,14 +76,27 @@ async function cargarVistaGestionInsumos() {
   try {
     const url = "/vistas/insumos/index.html";
     const html = await fetch(url).then((r) => r.text());
-    const animales = await obtenerInsumos();
-    let filas = animales.map(
+    const insumos = await obtenerInsumos();
+    let filas = insumos.map(
       (u, i) => `<tr>
                       <td>${u.nombre}</td>
                       <td>${u.detalles}</td>
                       <td>${u.unidades}</td>
                       <td>${u.estado ? "Activa" : "Inactiva"}</td>
-                    </tr>`
+                      <td>${u.create_at}</td>
+                      <td style="margin:center;">
+                            <a class="float-right mr-3" data-toggle="modal" href="#ventana3" >
+                              <button class="float-right btn btn-primary" onclick="guardarIdinsumo(${u.id})">
+                              <i class="fas fa-plus"></i>
+                              </button>
+                            </a>
+                            <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
+                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdinsumo(${u.id})">
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                            </a>
+                        </td>
+                      </tr>`
     );
     document.querySelector("#contenido-dinamico").innerHTML = html;
     document.querySelector("#insumos-body").innerHTML = filas;

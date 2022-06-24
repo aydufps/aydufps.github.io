@@ -9,12 +9,19 @@ async function cargarDatosDeUsuario() {
   switch (usuario.rol_id) {
     case ROLES.ADMINISTRADOR:
       document.querySelector("#rolLabel").textContent = "ADMINISTRADOR";
+      document.getElementById('btnEnfermedades').style.display = 'none';
+      document.getElementById('btnVacunas').style.display = 'none';
+      break;
+    case ROLES.CAPATAZ:                     
+      document.querySelector("#rolLabel").textContent = "VETERINARIO";
+      document.getElementById('btnCargarInsumos').style.display = 'none';
+      document.getElementById('btnCargarUsuarios').style.display = 'none';
       break;
     case ROLES.VETERINARIO:
-      document.querySelector("#rolLabel").textContent = "VETERINARIO";
-      break;
-    case ROLES.CAPATAZ:
       document.querySelector("#rolLabel").textContent = "CAPATAZ";
+      document.getElementById('btnCargarUsuarios').style.display = 'none';
+      document.getElementById('btnEnfermedades').style.display = 'none';
+      document.getElementById('btnVacunas').style.display = 'none';
       break;
     default:
       break;
@@ -26,7 +33,9 @@ async function existeUnLogueado() {
     const usuario = localStorage.getItem("usuario");
     if (!usuario) {
       window.location.replace("/vistas/login/login.html");
+      alert("No se encuentra registardo");
     }
+    
   } catch (error) {
     console.log(error);
   }

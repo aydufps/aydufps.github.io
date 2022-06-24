@@ -36,11 +36,21 @@
   </head>
 
   <body>
-    <div id="wrapper" class="toggled">
+    <div class="container-fluid" id="contenedor-sidebar">
+      <div class="row">
+        <div class="col-md-4 justify-content-center">
+          <img src="Imagenes/sacrificio-de-ganado-vacuno-disenos-de-logotipo-inspiracion-aislado-sobre-fondo-blanco-r093dh.jpg" alt="">
+        </div>
+        <div class="col-md-8" id="titulo">
+          <h4>Gestion de finca Ganadera</h4>
+        </div>
+      </div>
+    </div>
+    <div id="wrapper" class="toggled container-fluid">
       <!-- Sidebar -->
       <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
-          <li class="sidebar-brand">
+          <li class="sidebar-brand card">
             <a id="rolLabel"></a>
           </li>
           <li>
@@ -58,8 +68,8 @@
           <li>
             <a id="btnVacunas">Vacunas</a>
           </li>
-          <li>
-            <a id="btnCerrarSesion">Salir</a>
+          <li class="align-items-end">
+            <a class="align-self-end" id="btnCerrarSesion">Cerrar Sesion</a>
           </li>
         </ul>
       </div>
