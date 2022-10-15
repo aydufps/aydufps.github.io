@@ -12,7 +12,7 @@ async function cargarDatosDeUsuario() {
       document.getElementById('btnEnfermedades').style.display = 'none';
       document.getElementById('btnVacunas').style.display = 'none';
       break;
-    case ROLES.CAPATAZ:                     
+    case ROLES.CAPATAZ:
       document.querySelector("#rolLabel").textContent = "VETERINARIO";
       document.getElementById('btnCargarInsumos').style.display = 'none';
       document.getElementById('btnCargarUsuarios').style.display = 'none';
@@ -35,7 +35,7 @@ async function existeUnLogueado() {
       window.location.replace("/vistas/login/login.html");
       alert("No se encuentra registardo");
     }
-    
+
   } catch (error) {
     console.log(error);
   }

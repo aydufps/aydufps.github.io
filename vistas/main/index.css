@@ -39,6 +39,7 @@ body {
 }
 
 #titulo>h4 {
+  text-align: center;
   margin-left: -210px;
   font: bold 36px Arial, Helvetica, sans-serif;
   line-height: 60px;
@@ -182,10 +183,6 @@ table {
 .dt-sorter {
   font-weight: bold;
 }
-
-/* #btnCerrarSesion{
-  margin-top: 320px;
-} */
 
 #rolLabel{
   color: #000;
