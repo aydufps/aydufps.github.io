@@ -214,12 +214,6 @@ async function cargarVistaGestionAnimal() {
                             <i class="fas fa-trash-alt"></i>
                           </button>
                         </a>
-                        <label title="Upload image file" class="btn btn-primary">
-                        
-                        <input type="file" name="fileUpload" id="fileUpload" onchange="convertImage(this, 'fileUploaded', ${u.id})" 
-                        style="display: none" accept="image/jpg, image/jpeg" />
-                            <i class="fas fa-image" for="fileUpload"></i>
-                            </label>
   <a class="float-right mr-3" data-toggle="modal" href="#animal-modal-detail" id="buton-vacuna">
                           <button class="float-right btn btn-primary" id="boton-agregar-vacuna" onclick="guardarIdAnimal(${u.id})">
                           <i class="fas fa-eye"></i>
@@ -285,22 +279,34 @@ async function toBase64(file) {
   });
 }
 
-async function convertImage(input, id, animalId) {
+async function convertImage(input, id) {
+  const animalId = localStorage.getItem('idAnimal');
   const file = input.files[0];
   if (file.type === 'image/jpg' || file.type === 'image/jpeg') {
-    // document.querySelector('#' + id).value = await toBase64(file);
-    let path = 'animales/' + animalId + '/profile.jpg';
+    const path = 'animales/' + animalId + '/profile.jpg';
     let storageRef = firebase.storage().ref();
     let fotoRef = storageRef.child(path);
-    fotoRef.putString(await toBase64(file), 'data_url').then(function () {
-      console.log('subida exitosa');
+    Swal.showLoading();
+    fotoRef.putString(await toBase64(file), 'data_url').then(async function () {
+      await agregarFotoAlModal();
+      Swal.fire({
+        icon: 'success',
+        title: 'Listo',
+        text: 'Foto actualizada',
+      });
     });
   } else {
     console.log('Error', 'Solo se pueden cargar imagenes con formato jpg o jpge');
+    Swal.fire({
+      icon: 'error',
+      title: 'Advertencia',
+      text: 'Solo se pueden cargar imagenes con formato jpg o jpge',
+    });
   }
 }
 
 async function guardarIdAnimal(idAnimal) {
+  localStorage.setItem('idAnimal', idAnimal);
   let data = localStorage.getItem('animales');
   if (!data) return;
   data = JSON.parse(data);
@@ -308,41 +314,17 @@ async function guardarIdAnimal(idAnimal) {
   if (!item) return;
   console.log(item);
   document.querySelector('#label-animal-nombre').textContent = item.nombre || 'N/A';
-  // document.querySelector('#foto-animal').textContent = item.nombre || 'N/A';
-  var storageRef = firebase.storage().ref();
+  await agregarFotoAlModal();
+}
+
+async function agregarFotoAlModal() {
+  const id = localStorage.getItem('idAnimal');
+  const storageRef = firebase.storage().ref();
   storageRef
-    .child(`animales/${item.id}/profile.jpg`)
+    .child(`animales/${id}/profile.jpg`)
     .getDownloadURL()
     .then(url => {
-      // `url` is the download URL for 'images/stars.jpg'
-
-      // This can be downloaded directly:
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-      xhr.onload = event => {
-        var blob = xhr.response;
-      };
-      xhr.open('GET', url);
-      xhr.send();
-
-      // Or inserted into an <img> element
-      var img = document.querySelector('#foto-animal');
-      img.setAttribute('src', url);
+      document.querySelector('#foto-animal').setAttribute('src', url);
     })
-    .catch(error => {
-      // Handle any errors
-    });
-
-  // var gsReference = storageRef.refFromURL(`animales/${item.id}/profile.jpg`);
-  // var listRef = storageRef.child(`animales/${item.id}/profile.jpg`);
-  // var httpsReference = storageRef.refFromURL(`animales/${item.id}/profile.jpg`);
-  // console.log(httpsReference);
-  // return await listRef
-  //     .listAll()
-  //     .then((data) => data.items.map((item) => item.getDownloadURL()))
-  //     .then((peticiones) => waitToDownload({ peticiones }))
-  //     .catch((e) => {
-  //         console.error(e);
-  //     });
-  // }
+    .catch(error => {});
 }

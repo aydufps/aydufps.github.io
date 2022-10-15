@@ -194,3 +194,7 @@ table {
   text-transform: capitalize;
   font-weight: bold;
 }
+
+#fileUpload {
+  position: absolute;
+}

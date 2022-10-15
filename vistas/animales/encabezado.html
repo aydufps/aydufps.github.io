@@ -132,10 +132,20 @@
         </div>
         <div class="modal-body card container-fluid">
           <div class="card" style="width: 18rem">
-            <img class="card-img-top" src="" alt="foto del animal" />
+            <img class="card-img-top" src="" alt="foto del animal" id="foto-animal" />
             <div class="card-body">
               <h5 class="card-title" id="label-animal-nombre"></h5>
             </div>
+            <label title="Upload image file" class="btn btn-primary">
+              <input
+                type="file"
+                name="fileUpload"
+                id="fileUpload"
+                onchange="convertImage(this, 'fileUploaded')"
+                style="display: none"
+                accept="image/jpg, image/jpeg" />
+              <em class="fas fa-upload" for="fileUpload"></em>
+            </label>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
