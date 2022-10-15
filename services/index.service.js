@@ -1,14 +1,14 @@
-const componentanimal = "animales";
+const componentanimal = 'animales';
 
 function cerrarSesion() {
-  window.location.replace("/vistas/login/login.html");
+  window.location.replace('/vistas/login/login.html');
 }
 
 async function cargarDatosDeUsuario() {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const usuario = JSON.parse(localStorage.getItem('usuario'));
   switch (usuario.rol_id) {
     case ROLES.ADMINISTRADOR:
-      document.querySelector("#rolLabel").textContent = "ADMINISTRADOR";
+      document.querySelector('#rolLabel').textContent = 'ADMINISTRADOR';
       document.getElementById('btnEnfermedades').style.display = 'none';
       document.getElementById('btnVacunas').style.display = 'none';
       break;
@@ -18,7 +18,7 @@ async function cargarDatosDeUsuario() {
       document.getElementById('btnCargarUsuarios').style.display = 'none';
       break;
     case ROLES.VETERINARIO:
-      document.querySelector("#rolLabel").textContent = "CAPATAZ";
+      document.querySelector('#rolLabel').textContent = 'CAPATAZ';
       document.getElementById('btnCargarUsuarios').style.display = 'none';
       document.getElementById('btnEnfermedades').style.display = 'none';
       document.getElementById('btnVacunas').style.display = 'none';
@@ -30,19 +30,18 @@ async function cargarDatosDeUsuario() {
 
 async function existeUnLogueado() {
   try {
-    const usuario = localStorage.getItem("usuario");
+    const usuario = localStorage.getItem('usuario');
     if (!usuario) {
-      window.location.replace("/vistas/login/login.html");
-      alert("No se encuentra registardo");
+      window.location.replace('/vistas/login/login.html');
+      alert('No se encuentra registardo');
     }
-
   } catch (error) {
     console.log(error);
   }
 }
 
 async function addView(html) {
-  document.querySelector("#contenido-dinamico").innerHTML = html;
+  document.querySelector('#contenido-dinamico').innerHTML = html;
 }
 
 async function iniciarPagina() {
@@ -50,18 +49,18 @@ async function iniciarPagina() {
 }
 
 async function agregarAnimalSelect() {
-  var selectmadre = document.getElementById("select-madre");
-  var selectpadre = document.getElementById("select-padre");
+  var selectmadre = document.getElementById('select-madre');
+  var selectpadre = document.getElementById('select-padre');
   const animales = await obtenerAnimales();
   if (selectmadre.length == 1) {
     for (let index = 0; index < animales.length; index++) {
       if (animales[index].genero == false) {
-        const optionmadre = document.createElement("option");
+        const optionmadre = document.createElement('option');
         optionmadre.value = animales[index].id;
         optionmadre.text = animales[index].nombre;
         selectmadre.appendChild(optionmadre);
       } else {
-        const optionpadre = document.createElement("option");
+        const optionpadre = document.createElement('option');
         optionpadre.value = animales[index].id;
         optionpadre.text = animales[index].nombre;
         selectpadre.appendChild(optionpadre);
@@ -72,51 +71,51 @@ async function agregarAnimalSelect() {
 
 async function guardarAnimal() {
   let data = {
-    nombre: document.querySelector("#nombre-animal").value,
-    genero: document.querySelector("#genero-animal").value == "true",
-    detalles: document.querySelector("#detalles-animal").value,
-    padre_id: document.querySelector("#select-padre").value || null,
-    madre_id: document.querySelector("#select-madre").value || null,
-    fecha_nacimiento: document.getElementById("fecha-nacimiento-animal").value,
+    nombre: document.querySelector('#nombre-animal').value,
+    genero: document.querySelector('#genero-animal').value == 'true',
+    detalles: document.querySelector('#detalles-animal').value,
+    padre_id: document.querySelector('#select-padre').value || null,
+    madre_id: document.querySelector('#select-madre').value || null,
+    fecha_nacimiento: document.getElementById('fecha-nacimiento-animal').value,
   };
-  let animal = await fetch("https://aydfincas.herokuapp.com/animales", {
-    method: "POST",
+  let animal = await fetch('https://aydfincas.herokuapp.com/animales', {
+    method: 'POST',
     body: JSON.stringify(data),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-  }).then((res) => res.json());
+  }).then(res => res.json());
   cargarVistaGestionAnimal();
 }
 
 async function guardaridAnimal(id) {
-  localStorage.setItem("idEliminar", id);
+  localStorage.setItem('idEliminar', id);
 }
 
 async function eliminarAnimal() {
-  const id = localStorage.getItem("idEliminar");
-  fetch("https://aydfincas.herokuapp.com/animal/" + id, {
-    method: "DELETE",
+  const id = localStorage.getItem('idEliminar');
+  fetch('https://aydfincas.herokuapp.com/animal/' + id, {
+    method: 'DELETE',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-  }).then((res) => {
+  }).then(res => {
     cargarVistaGestionAnimal();
-    localStorage.removeItem("idEliminar");
+    localStorage.removeItem('idEliminar');
   });
 }
 
 async function borraridAnimal() {
-  localStorage.removeItem("idEliminar");
+  localStorage.removeItem('idEliminar');
 }
 
 async function agregarSelectVacuna() {
-  var selectVacunaAnimal = document.getElementById("selected-vacuna");
+  var selectVacunaAnimal = document.getElementById('selected-vacuna');
   const vacunas = await obtenerVacunas();
   if (selectVacunaAnimal.length == 1) {
     for (let index = 0; index < vacunas.length; index++) {
       if (vacunas[index].unidades > 0) {
-        const optionVacuna = document.createElement("option");
+        const optionVacuna = document.createElement('option');
         optionVacuna.value = vacunas[index].id;
         optionVacuna.text = vacunas[index].nombre;
         selectVacunaAnimal.appendChild(optionVacuna);
@@ -126,19 +125,19 @@ async function agregarSelectVacuna() {
 }
 
 async function guardarVacunaAnimal() {
-  id_vacuna = document.querySelector("#selected-vacuna").value;
+  id_vacuna = document.querySelector('#selected-vacuna').value;
   console.log(id_vacuna);
   let data = {
-    animal_id: localStorage.getItem("idEliminar"),
-    vacuna_id: document.querySelector("#selected-vacuna").value,
+    animal_id: localStorage.getItem('idEliminar'),
+    vacuna_id: document.querySelector('#selected-vacuna').value,
   };
-  fetch("https://aydfincas.herokuapp.com/animales/vacunas", {
-    method: "POST",
+  fetch('https://aydfincas.herokuapp.com/animales/vacunas', {
+    method: 'POST',
     body: JSON.stringify(data),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-  }).then((res) => res.json());
+  }).then(res => res.json());
   const vacunas = await obtenerVacunas();
   for (let index = 0; index < vacunas.length; index++) {
     if (id_vacuna == vacunas[index].id) {
@@ -150,13 +149,13 @@ async function guardarVacunaAnimal() {
         unidades: vacunas[index].unidades - 1,
         fecha_vencimiento_lote: vacunas[index].fecha_vencimiento_lote,
       };
-      fetch("https://aydfincas.herokuapp.com/vacunas", {
-        method: "PUT",
+      fetch('https://aydfincas.herokuapp.com/vacunas', {
+        method: 'PUT',
         body: JSON.stringify(data),
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-      }).then((res) => res.json());
+      }).then(res => res.json());
     }
   }
 }
@@ -164,31 +163,21 @@ async function guardarVacunaAnimal() {
 async function cargaContenidoAnimal() {
   try {
     const url = `/vistas/${componentanimal}/index.html`;
-    const html = await fetch(url).then((r) => r.text());
+    const html = await fetch(url).then(r => r.text());
     const urlEncabezado = `/vistas/${componentanimal}/encabezado.html`;
-    const htmlEncabezado = await fetch(urlEncabezado).then((r) => r.text());
+    const htmlEncabezado = await fetch(urlEncabezado).then(r => r.text());
 
-    document.querySelector("#contenido-dinamico").innerHTML = html;
-    document.querySelector("#encabezado-dinamico").innerHTML = htmlEncabezado;
-    document
-      .querySelector("#btnAnimales")
-      .addEventListener("click", cargarVistaGestionAnimal);
-    document
-      .querySelector("#guardar-animal")
-      .addEventListener("click", guardarAnimal);
-    document
-      .querySelector("#no-eliminar-animal")
-      .addEventListener("click", borraridAnimal);
-    document
-      .querySelector("#si-eliminar-animal")
-      .addEventListener("click", eliminarAnimal);
-    document
-      .querySelector("#guardar-vacuna-animal")
-      .addEventListener("click", guardarVacunaAnimal);
+    document.querySelector('#contenido-dinamico').innerHTML = html;
+    document.querySelector('#encabezado-dinamico').innerHTML = htmlEncabezado;
+    document.querySelector('#btnAnimales').addEventListener('click', cargarVistaGestionAnimal);
+    document.querySelector('#guardar-animal').addEventListener('click', guardarAnimal);
+    document.querySelector('#no-eliminar-animal').addEventListener('click', borraridAnimal);
+    document.querySelector('#si-eliminar-animal').addEventListener('click', eliminarAnimal);
+    document.querySelector('#guardar-vacuna-animal').addEventListener('click', guardarVacunaAnimal);
   } catch (error) {
     console.log(error);
-    alert("no entra al sistema de encabesado");
-    alert("dekmdkemdkm");
+    alert('no entra al sistema de encabesado');
+    alert('dekmdkemdkm');
   }
   agregarAnimalSelect();
   agregarSelectVacuna();
@@ -197,8 +186,8 @@ async function cargaContenidoAnimal() {
 async function cargarVistaGestionAnimal() {
   cargaContenidoAnimal();
   try {
-    const url = "/vistas/animales/index.html";
-    const html = await fetch(url).then((r) => r.text());
+    const url = '/vistas/animales/index.html';
+    const html = await fetch(url).then(r => r.text());
     const animales = await obtenerAnimales();
     const nombrevacuna = {};
     /* for (let index = 0; index < animales.length; index++) {
@@ -210,10 +199,10 @@ async function cargarVistaGestionAnimal() {
                     <td>${u.nombre}</td>
                     <td>${u.detalles}</td>
                     <td>${u.fecha_nacimiento}</td>
-                    <td>${u.genero ? "Macho" : "Hembra"}</td>
-                    <td>${u.madre_id == null ? "N/A" : u.madre_id}</td>
-                    <td>${u.padre_id == null ? "N/A" : u.padre_id}</td>
-                    <td>${u.estado ? "Activa" : "Inactiva"}</td>
+                    <td>${u.genero ? 'Macho' : 'Hembra'}</td>
+                    <td>${u.madre_id == null ? 'N/A' : u.madre_id}</td>
+                    <td>${u.padre_id == null ? 'N/A' : u.padre_id}</td>
+                    <td>${u.estado ? 'Activa' : 'Inactiva'}</td>
                     <td style="margin:center;">
                         <a class="float-right mr-3" data-toggle="modal" href="#ventana3" id="buton-vacuna">
                           <button class="float-right btn btn-primary" id="boton-agregar-vacuna" onclick="guardaridAnimal(${u.id})">
@@ -225,32 +214,37 @@ async function cargarVistaGestionAnimal() {
                             <i class="fas fa-trash-alt"></i>
                           </button>
                         </a>
+  <a class="float-right mr-3" data-toggle="modal" href="#animal-modal-detail" id="buton-vacuna">
+                          <button class="float-right btn btn-primary" id="boton-agregar-vacuna" onclick="guardarIdAnimal(${u.id})">
+                          <i class="fas fa-eye"></i>
+                          </button>
+                        </a>
                     </td>
                     <td>
                         
                     </td>
-                  </tr>`
+                  </tr>
+                  `
     );
-    document.querySelector("#contenido-dinamico").innerHTML = html;
-    document.querySelector("#animales-body").innerHTML = filas;
-    new JSTable("#animals-table", {
+    document.querySelector('#contenido-dinamico').innerHTML = html;
+    document.querySelector('#animales-body').innerHTML = filas;
+    new JSTable('#animals-table', {
       sortable: true,
       searchable: true,
       labels: {
-        placeholder: "Buscar...",
-        perPage: "{select} Entradas por pagina",
+        placeholder: 'Buscar...',
+        perPage: '{select} Entradas por pagina',
         perPageSelect: [5, 10, 15, 20, 25],
-        noRows: "No hay entradas",
-        info: "Mostrando {start} / {end} de {rows} entradas",
-        loading: "Loading...",
-        infoFiltered:
-          "Mostrando {start} / {end} de {rows} entradas (filtrado de {rowsTotal} entradas)",
+        noRows: 'No hay entradas',
+        info: 'Mostrando {start} / {end} de {rows} entradas',
+        loading: 'Loading...',
+        infoFiltered: 'Mostrando {start} / {end} de {rows} entradas (filtrado de {rowsTotal} entradas)',
       },
       columns: [
         {
           select: 0,
           sortable: true,
-          sort: "asc",
+          sort: 'asc',
           searchable: true,
           render: function (cell, idx) {
             let data = cell.innerHTML;
@@ -267,23 +261,70 @@ async function cargarVistaGestionAnimal() {
 window.onload = async function () {
   await existeUnLogueado();
   await iniciarPagina();
-  document
-    .querySelector("#btnCargarAnimal")
-    .addEventListener("click", cargarVistaGestionAnimal);
-  document
-    .querySelector("#btnCargarInsumos")
-    .addEventListener("click", cargarVistaGestionInsumos);
-  document
-    .querySelector("#btnCargarUsuarios")
-    .addEventListener("click", cargarVistaGestionUsuarios);
-  document
-    .querySelector("#btnEnfermedades")
-    .addEventListener("click", cargarVistaGestionEnfermedades);
-  document
-    .querySelector("#btnVacunas")
-    .addEventListener("click", cargarVistaGestionVacunas);
+  document.querySelector('#btnCargarAnimal').addEventListener('click', cargarVistaGestionAnimal);
+  document.querySelector('#btnCargarInsumos').addEventListener('click', cargarVistaGestionInsumos);
+  document.querySelector('#btnCargarUsuarios').addEventListener('click', cargarVistaGestionUsuarios);
+  document.querySelector('#btnEnfermedades').addEventListener('click', cargarVistaGestionEnfermedades);
+  document.querySelector('#btnVacunas').addEventListener('click', cargarVistaGestionVacunas);
 };
 
-document
-  .querySelector("#btnCerrarSesion")
-  .addEventListener("click", cerrarSesion);
+document.querySelector('#btnCerrarSesion').addEventListener('click', cerrarSesion);
+
+async function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
+async function convertImage(input, id) {
+  const animalId = localStorage.getItem('idAnimal');
+  const file = input.files[0];
+  if (file.type === 'image/jpg' || file.type === 'image/jpeg') {
+    const path = 'animales/' + animalId + '/profile.jpg';
+    let storageRef = firebase.storage().ref();
+    let fotoRef = storageRef.child(path);
+    Swal.showLoading();
+    fotoRef.putString(await toBase64(file), 'data_url').then(async function () {
+      await agregarFotoAlModal();
+      Swal.fire({
+        icon: 'success',
+        title: 'Listo',
+        text: 'Foto actualizada',
+      });
+    });
+  } else {
+    console.log('Error', 'Solo se pueden cargar imagenes con formato jpg o jpge');
+    Swal.fire({
+      icon: 'error',
+      title: 'Advertencia',
+      text: 'Solo se pueden cargar imagenes con formato jpg o jpge',
+    });
+  }
+}
+
+async function guardarIdAnimal(idAnimal) {
+  localStorage.setItem('idAnimal', idAnimal);
+  let data = localStorage.getItem('animales');
+  if (!data) return;
+  data = JSON.parse(data);
+  const item = data.find(el => el.id === idAnimal);
+  if (!item) return;
+  console.log(item);
+  document.querySelector('#label-animal-nombre').textContent = item.nombre || 'N/A';
+  await agregarFotoAlModal();
+}
+
+async function agregarFotoAlModal() {
+  const id = localStorage.getItem('idAnimal');
+  const storageRef = firebase.storage().ref();
+  storageRef
+    .child(`animales/${id}/profile.jpg`)
+    .getDownloadURL()
+    .then(url => {
+      document.querySelector('#foto-animal').setAttribute('src', url);
+    })
+    .catch(error => {});
+}

@@ -95,17 +95,17 @@ body {
   text-decoration: none;
 }
 
-.sidebar-nav>.sidebar-brand {
+.sidebar-nav > .sidebar-brand {
   height: 65px;
   font-size: 21px;
   line-height: 60px;
 }
 
-.sidebar-nav>.sidebar-brand a {
+.sidebar-nav > .sidebar-brand a {
   color: #999999;
 }
 
-.sidebar-nav>.sidebar-brand a:hover {
+.sidebar-nav > .sidebar-brand a:hover {
   color: rgb(255, 255, 255);
   background: none;
 }
@@ -138,7 +138,7 @@ body {
   }
 }
 
-ul>li :hover {
+ul > li :hover {
   cursor: pointer;
 }
 
@@ -147,8 +147,7 @@ ul li {
 }
 
 .dt-wrapper {
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
-    rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
   transition: 0.3s;
   border-radius: 6px;
 }
@@ -172,7 +171,7 @@ table {
 }
 
 * {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-weight: bold;
 }
 
@@ -186,4 +185,13 @@ table {
 
 #rolLabel{
   color: #000;
+}
+
+#label-animal-nombre {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+#fileUpload {
+  position: absolute;
 }
