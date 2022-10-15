@@ -34,6 +34,10 @@ async function eliminarInsumo() {
   }
 }
 
+async function agregarCantidaInsumos(){
+
+}
+
 async function guardarInsumo() {
   let data = {
     nombre: document.querySelector("#nombre-inusumo").value,
@@ -71,6 +75,33 @@ async function cargaContenidoInsumos() {
   }
 }
 
+async function actualizarInsumo() {
+  const usuarioId = localStorage.getItem("idEliminar");
+  var actualizarNombre = document.querySelector("#actulizar-nombre").value;
+  var actualizarCorreo = document.querySelector("#actualizar-correo").value;
+  var actualizarRoolis = document.querySelector("#actualizar-rol").value;
+  if (actualizarNombre != '' && actualizarCorreo != '' && actualizarRoolis != '') {
+    let data = {
+      id: usuarioId,
+      nombre: document.querySelector("#actulizar-nombre").value,
+      correo: document.querySelector("#actualizar-correo").value,
+      rol_id: document.querySelector("#actualizar-rol").value,
+    }
+    fetch("https://aydfincas.herokuapp.com/usuarios", {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      cargarVistaGestionUsuarios();
+      localStorage.removeItem("idEliminarUsuario");
+    });
+  } else {
+    alert("Complete todos los cambios");
+  }
+}
+
 async function cargarVistaGestionInsumos() {
   cargaContenidoInsumos();
   try {
@@ -88,6 +119,11 @@ async function cargarVistaGestionInsumos() {
                             <a class="float-right mr-3" data-toggle="modal" href="#ventana3" >
                               <button class="float-right btn btn-primary" onclick="guardarIdinsumo(${u.id})">
                               <i class="fas fa-plus"></i>
+                              </button>
+                            </a>
+                            <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
+                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdinsumo(${u.id})">
+                                <i class="fas fa-trash-alt"></i>
                               </button>
                             </a>
                             <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">

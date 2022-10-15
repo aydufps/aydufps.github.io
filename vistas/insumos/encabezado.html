@@ -1,5 +1,6 @@
 <div class="contenedor container-fluid">
   <br />
+  <!-- titulo -->
   <div class="row">
     <br />
     <div class="col-md-10" id="section_path">
@@ -15,6 +16,8 @@
     </div>
   </div>
   <br />
+
+  <!-- Ventana de añadir insumo nuevo -->
   <div class="modal fade" id="ventana1" style="margin-top: 90px">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -31,19 +34,19 @@
             <div class="col-md-8 form-group">
               <label for="insumo" class="form-label"><strong>Nombre</strong></label>
               <input type="text" name="insumo" id="nombre-inusumo" placeholder="Digite el nombre del insumo"
-                class="form-control" />
+                class="form-control" required />
             </div>
             <div class="col-md-4 form-group">
               <label for="cantida" class="form-label"><strong>Cantidad</strong></label>
-              <input type="number" class="form-control" id="cantidad-insumo"
-                placeholder="Digite la cantidad del insumo" />
+              <input type="number" class="form-control" id="cantidad-insumo" placeholder="Digite la cantidad del insumo"
+                required />
             </div>
           </div>
           <div class="row">
             <div class="col-md-12 form-group">
               <label for=""><strong>Detalles</strong></label>
               <textarea name="detalle" id="detalle-insumo" cols="3" rows="5" class="form-control"
-                placeholder="Descripcion corta del insumo"></textarea>
+                placeholder="Descripcion corta del insumo" required></textarea>
             </div>
           </div>
         </div>
@@ -58,6 +61,8 @@
       </div>
     </div>
   </div>
+
+  <!-- Ventana de eliminar insumo -->
   <div class="modal fade" id="ventana2" style="margin-top: 90px">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -77,6 +82,37 @@
             </button>
             <button type="button" class="btn btn-primary" id="si-eliminar-insumo" data-dismiss="modal">
               Si
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ventana de agregar cantidad a un insumo -->
+  <div class="modal fade" id="ventana3" style="margin-top: 90px">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title justify-content-sm-center" id="exampleModalLabel">
+            Agregar Cantidad
+          </h3>
+          <button type="button" class="close btn btn-whited" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body card container-fluid">
+          <div class="col-md-6 form-floating mb-3">
+            <input type="number" name="nuevaCantidad" id="nueva-cantidad" placeholder="Digite la cantidad"
+              class="col-md-4 form-control">
+            <label for="floatingInput">Digite la Nueva Cantidad</label>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="no-eliminar-insumo">
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-success" id="si-eliminar-insumo" data-dismiss="modal">
+              Aceptar
             </button>
           </div>
         </div>
