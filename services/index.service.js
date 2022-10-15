@@ -220,6 +220,11 @@ async function cargarVistaGestionAnimal() {
                         style="display: none" accept="image/jpg, image/jpeg" />
                             <i class="fas fa-image" for="fileUpload"></i>
                             </label>
+  <a class="float-right mr-3" data-toggle="modal" href="#animal-modal-detail" id="buton-vacuna">
+                          <button class="float-right btn btn-primary" id="boton-agregar-vacuna" onclick="guardarIdAnimal(${u.id})">
+                          <i class="fas fa-eye"></i>
+                          </button>
+                        </a>
                     </td>
                     <td>
                         
@@ -293,4 +298,51 @@ async function convertImage(input, id, animalId) {
   } else {
     console.log('Error', 'Solo se pueden cargar imagenes con formato jpg o jpge');
   }
+}
+
+async function guardarIdAnimal(idAnimal) {
+  let data = localStorage.getItem('animales');
+  if (!data) return;
+  data = JSON.parse(data);
+  const item = data.find(el => el.id === idAnimal);
+  if (!item) return;
+  console.log(item);
+  document.querySelector('#label-animal-nombre').textContent = item.nombre || 'N/A';
+  // document.querySelector('#foto-animal').textContent = item.nombre || 'N/A';
+  var storageRef = firebase.storage().ref();
+  storageRef
+    .child(`animales/${item.id}/profile.jpg`)
+    .getDownloadURL()
+    .then(url => {
+      // `url` is the download URL for 'images/stars.jpg'
+
+      // This can be downloaded directly:
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = event => {
+        var blob = xhr.response;
+      };
+      xhr.open('GET', url);
+      xhr.send();
+
+      // Or inserted into an <img> element
+      var img = document.querySelector('#foto-animal');
+      img.setAttribute('src', url);
+    })
+    .catch(error => {
+      // Handle any errors
+    });
+
+  // var gsReference = storageRef.refFromURL(`animales/${item.id}/profile.jpg`);
+  // var listRef = storageRef.child(`animales/${item.id}/profile.jpg`);
+  // var httpsReference = storageRef.refFromURL(`animales/${item.id}/profile.jpg`);
+  // console.log(httpsReference);
+  // return await listRef
+  //     .listAll()
+  //     .then((data) => data.items.map((item) => item.getDownloadURL()))
+  //     .then((peticiones) => waitToDownload({ peticiones }))
+  //     .catch((e) => {
+  //         console.error(e);
+  //     });
+  // }
 }

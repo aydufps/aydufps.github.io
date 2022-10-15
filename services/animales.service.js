@@ -1,11 +1,12 @@
 async function obtenerAnimales() {
-  let data = await fetch(API + "animales", {
-    method: "GET",
+  let data = await fetch(API + 'animales', {
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-  }).then((res) => res.json());
+  }).then(res => res.json());
   if (data) {
+    localStorage.setItem('animales', JSON.stringify(data));
     return data;
   }
 }
