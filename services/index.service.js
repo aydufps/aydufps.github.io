@@ -214,8 +214,8 @@ async function cargarVistaGestionAnimal() {
                             <i class="fas fa-trash-alt"></i>
                           </button>
                         </a>
-                        <label title="Upload image file" for="fileUpload" class="btn btn-primary">
-                        <input type="hidden" name="fileUploaded" id="fileUploaded" />
+                        <label title="Upload image file" class="btn btn-primary">
+                        
                         <input type="file" name="fileUpload" id="fileUpload" onchange="convertImage(this, 'fileUploaded', ${u.id})" 
                         style="display: none" accept="image/jpg, image/jpeg" />
                             <i class="fas fa-image" for="fileUpload"></i>
@@ -271,24 +271,23 @@ window.onload = async function () {
 
 document.querySelector('#btnCerrarSesion').addEventListener('click', cerrarSesion);
 
-var toBase64 = file =>
-  new Promise((resolve, reject) => {
+async function toBase64(file) {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
   });
+}
+
 async function convertImage(input, id, animalId) {
-  console.log(animalId);
-  console.log(id);
-  return;
   const file = input.files[0];
   if (file.type === 'image/jpg' || file.type === 'image/jpeg') {
-    document.querySelector('#' + id).value = await toBase64(file);
+    // document.querySelector('#' + id).value = await toBase64(file);
     let path = 'animales/' + animalId + '/profile.jpg';
     let storageRef = firebase.storage().ref();
     let fotoRef = storageRef.child(path);
-    fotoRef.putString(document.getElementById('fileUploaded').value, 'data_url').then(function () {
+    fotoRef.putString(await toBase64(file), 'data_url').then(function () {
       console.log('subida exitosa');
     });
   } else {
