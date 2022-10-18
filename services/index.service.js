@@ -88,8 +88,19 @@ async function guardarAnimal() {
   cargarVistaGestionAnimal();
 }
 
-async function guardaridAnimal(id) {
-  localStorage.setItem('idEliminar', id);
+async function guardaridAnimal(idAnimal){
+  localStorage.setItem('idEliminar', idAnimal);
+}
+
+async function guardaridAnimalVenta(idAnimal) {
+  localStorage.setItem('idEliminar', idAnimal);
+  let data = localStorage.getItem('animales');
+  if (!data) return;
+  data = JSON.parse(data);
+  const item = data.find(el => el.id == idAnimal);
+  if (!item) return;
+  console.log(item);
+  document.querySelector('#detalle-venta').textContent = item.enVenta ? "Deseas cancelar la venta" : "¿Desea colocar en venta el animal?" ;
 }
 
 async function eliminarAnimal() {
@@ -170,10 +181,14 @@ async function cargaContenidoAnimal() {
     document.querySelector('#contenido-dinamico').innerHTML = html;
     document.querySelector('#encabezado-dinamico').innerHTML = htmlEncabezado;
     document.querySelector('#btnAnimales').addEventListener('click', cargarVistaGestionAnimal);
+
     document.querySelector('#guardar-animal').addEventListener('click', guardarAnimal);
     document.querySelector('#no-eliminar-animal').addEventListener('click', borraridAnimal);
     document.querySelector('#si-eliminar-animal').addEventListener('click', eliminarAnimal);
     document.querySelector('#guardar-vacuna-animal').addEventListener('click', guardarVacunaAnimal);
+
+    document.querySelector('#si-colocar-venta-animal').addEventListener('click', colocarVentaAnimal);
+
   } catch (error) {
     console.log(error);
     alert('no entra al sistema de encabesado');
@@ -186,6 +201,7 @@ async function cargaContenidoAnimal() {
 async function cargarVistaGestionAnimal() {
   cargaContenidoAnimal();
   try {
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
     const url = '/vistas/animales/index.html';
     const html = await fetch(url).then(r => r.text());
     const animales = await obtenerAnimales();
@@ -200,28 +216,32 @@ async function cargarVistaGestionAnimal() {
                     <td>${u.detalles}</td>
                     <td>${u.fecha_nacimiento}</td>
                     <td>${u.genero ? 'Macho' : 'Hembra'}</td>
-                    <td>${u.madre_id == null ? 'N/A' : u.madre_id}</td>
-                    <td>${u.padre_id == null ? 'N/A' : u.padre_id}</td>
+                    <td>${u.madre_id == null ? 'N/A' : `<a class="float-right mr-3" data-toggle="modal" href="#animal-modal-detail" id="boton-detalles-madre"><button class="float-right btn btn-outline-primary btn-sm" id="boton-agregar-vacuna" onclick="guardarIdAnimal(${u.madre_id})" >Ver Madre</button></a>`}
+                    </td>
+                    <td>${u.padre_id == null ? 'N/A' : `<a class="float-right mr-3" data-toggle="modal" href="#animal-modal-detail" id="buton-vacuna"><button class="float-right btn btn-outline-primary btn-sm" id="boton-agregar-vacuna" onclick="guardarIdAnimal(${u.padre_id})">Ver Padre</button></a`}
+                    </td>
                     <td>${u.estado ? 'Activa' : 'Inactiva'}</td>
                     <td style="margin:center;">
                         <a class="float-right mr-3" data-toggle="modal" href="#ventana3" id="buton-vacuna">
-                          <button class="float-right btn btn-primary" id="boton-agregar-vacuna" onclick="guardaridAnimal(${u.id})">
+                          <button class="float-right btn btn-primary btn-sm" id="boton-agregar-vacuna" onclick="guardaridAnimal(${u.id})">
                           <i class="fas fa-syringe"></i>
                           </button>
                         </a>
-                        <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar">
-                          <button class="float-right btn btn-danger" id="boton-eliminar-animal" onclick="guardaridAnimal(${u.id})">
-                            <i class="fas fa-trash-alt"></i>
-                          </button>
-                        </a>
-  <a class="float-right mr-3" data-toggle="modal" href="#animal-modal-detail" id="buton-vacuna">
-                          <button class="float-right btn btn-primary" id="boton-agregar-vacuna" onclick="guardarIdAnimal(${u.id})">
+                        <a class="float-right mr-3" data-toggle="modal" href="#animal-modal-detail" id="buton-vacuna">
+                          <button class="float-right btn btn-primary btn-sm" id="boton-agregar-vacuna" onclick="guardarIdAnimal(${u.id})">
                           <i class="fas fa-eye"></i>
                           </button>
                         </a>
-                    </td>
-                    <td>
-                        
+                        <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar">
+                          <button class="float-right btn btn-danger btn-sm" id="boton-eliminar-animal" onclick="guardaridAnimal(${u.id})">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        </a>
+                        ${ usuario.id == 1 ? `<a class="float-right mr-3" data-toggle="modal" href="#venta-modal-animal" id="buton-eliminar">
+                        <button class="float-right btn btn-${u.enVenta ? 'success' : 'danger' } btn-sm" id="boton-eliminar-animal" onclick="guardaridAnimalVenta(${u.id})">
+                           ${u.enVenta ? 'Colocar Venta' : 'Cancelar Venta' } <i class="fas fa-dollar-sign"></i>
+                        </button>
+                        </a>` : '' } 
                     </td>
                   </tr>
                   `
@@ -306,6 +326,7 @@ async function convertImage(input, id) {
 }
 
 async function guardarIdAnimal(idAnimal) {
+  document.querySelector('#foto-animal').setAttribute('src', 'https://previews.123rf.com/images/godruma/godruma1710/godruma171000086/87282077-vista-de-perfil-animal-de-longitud-completa-de-bull-en-vaca-muscular-marr%C3%B3n.jpg?fj=1');
   localStorage.setItem('idAnimal', idAnimal);
   let data = localStorage.getItem('animales');
   if (!data) return;
@@ -314,6 +335,35 @@ async function guardarIdAnimal(idAnimal) {
   if (!item) return;
   console.log(item);
   document.querySelector('#label-animal-nombre').textContent = item.nombre || 'N/A';
+  document.querySelector('#label-detalles-animal').textContent = item.detalles || 'N/A';
+  document.querySelector('#label-animal-fechaNacimiento').textContent = item.fecha_nacimiento || 'N/A';
+  if (item.genero == false) {
+    document.querySelector('#label-animal-genero').textContent = 'Hembra';
+  } else {
+    document.querySelector('#label-animal-genero').textContent = 'Macho';
+  }
+  console.log(item.vacunas);
+  let filas = item.vacunas.map(
+    (u, i) => `<tr>
+                  <td>${i}</t>
+                  <td>${u.name || "N/A"}</td>
+                  <td>${u.create_at}</td>
+                </tr>
+                `
+  );
+  var tablaVacunas = `<table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Fecha Vacunacion</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${filas.join("")}
+                        </tbody>
+                      </table>`
+  document.querySelector(`#vacunas-son`).innerHTML = tablaVacunas;
   await agregarFotoAlModal();
 }
 
@@ -326,5 +376,29 @@ async function agregarFotoAlModal() {
     .then(url => {
       document.querySelector('#foto-animal').setAttribute('src', url);
     })
-    .catch(error => {});
+    .catch(error => { });
+}
+
+async function colocarVentaAnimal(){
+  const idAnimal = localStorage.getItem('idEliminar');
+  let data = localStorage.getItem('animales');
+  if (!data) return;
+  data = JSON.parse(data);
+  console.log(idAnimal);
+  const item = data.find(el => el.id == idAnimal);
+  console.log(item);
+  console.log(data);
+  if (!item) return;
+  let parametros = {
+    "id": idAnimal,
+    "enVenta": ! item.enVenta
+  }
+  await fetch('https://aydfincas.herokuapp.com/animales', {
+    method: 'PUT',
+    body: JSON.stringify(parametros),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  cargarVistaGestionAnimal();
 }

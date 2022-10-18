@@ -96,6 +96,7 @@
       </div>
     </div>
   </div>
+
   <!-- Ventana Vacuna del animal -->
   <div class="modal fade" id="ventana3" style="margin-top: 90px">
     <div class="modal-dialog" id="contenido-modal">
@@ -121,8 +122,8 @@
   </div>
 
   <!--Modal animal detail-->
-  <div class="modal fade" id="animal-modal-detail" style="margin-top: 90px">
-    <div class="modal-dialog" id="contenido-modal">
+  <div class="modal fade" id="animal-modal-detail" >
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" id="contenido-modal">
       <div class="modal-content">
         <div class="modal-header">
           <h3 class="modal-title justify-content-sm-center" id="exampleModalLabel">DETALLE</h3>
@@ -131,21 +132,54 @@
           </button>
         </div>
         <div class="modal-body card container-fluid">
-          <div class="card" style="width: 18rem">
-            <img class="card-img-top" src="" alt="foto del animal" id="foto-animal" />
-            <div class="card-body">
-              <h5 class="card-title" id="label-animal-nombre"></h5>
+          <div class="card container-fluid">
+            <div class="row" id="contenido-imagen">
+              <img class="card-img-top" src="" alt="foto del animal" id="foto-animal" />
+            </div><br>
+            <div class="row">
+              <label title="Upload image file" class="btn btn-primary ">
+                <input
+                  type="file"
+                  name="fileUpload"
+                  id="fileUpload"
+                  onchange="convertImage(this, 'fileUploaded')"
+                  style="display: none"
+                  accept="image/jpg, image/jpeg" />
+                <em class="fas fa-upload" for="fileUpload"></em>
+              </label>
             </div>
-            <label title="Upload image file" class="btn btn-primary">
-              <input
-                type="file"
-                name="fileUpload"
-                id="fileUpload"
-                onchange="convertImage(this, 'fileUploaded')"
-                style="display: none"
-                accept="image/jpg, image/jpeg" />
-              <em class="fas fa-upload" for="fileUpload"></em>
-            </label>
+            <div class="card-body">
+              <div class="row">
+                <h1 class="card-title" id="label-animal-nombre"></h1><hr><br>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <h5 for=""><strong>Detalles</strong></h5>
+                  <p id="label-detalles-animal"></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-7" >
+                  <h5 for="" ><strong>Fecha de Nacimiento</strong></h5>
+                </div>
+                <div class="col-sm-4">
+                  <h5 id="label-animal-fechaNacimiento"></h5>
+                </div>
+              </div><hr>
+              <div class="row">
+                <div class="col-sm-5" >
+                  <h5><strong>Genero</strong></h5>
+                </div>
+                <div class="col-sm-5">
+                  <h5 id="label-animal-genero"></h5>
+                </div>
+              </div><hr>
+              <div class="row">
+                <h5><strong>Mis Vacunas</strong></h5>
+                <div id="vacunas-son">
+                </div>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -155,5 +189,26 @@
       </div>
     </div>
   </div>
-  <!--Modal animal detail-->
+
+  <!-- Modal-venta-animal -->
+  <div class="modal fade" id="venta-modal-animal" style="margin-top: 110px">
+    <div class="modal-dialog" id="contenido-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title justify-content-sm-center" id="exampleModalLabel">PONER EN VENTA</h3>
+          <button type="button" class="close btn btn-whited" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body card container-fluid">
+          <h5 id="detalle-venta"></h5>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="no-eliminar-animal">No</button>
+            <button type="button" class="btn btn-success" id="si-colocar-venta-animal" data-dismiss="modal">Si</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

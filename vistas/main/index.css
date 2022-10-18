@@ -188,10 +188,24 @@ table {
 }
 
 #label-animal-nombre {
+  text-align: center;
   text-transform: capitalize;
   font-weight: bold;
 }
 
 #fileUpload {
   position: absolute;
+  
+}
+
+#contenido-imagen{
+  margin: auto;
+  width: 430px;
+  height: 280px;
+}
+
+#animales-body{
+  text-align: center;
+  margin-left: auto;
+  margin-top: auto;
 }

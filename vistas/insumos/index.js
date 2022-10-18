@@ -13,7 +13,11 @@ async function obtenerInsumos() {
 }
 
 async function guardarIdinsumo(id) {
-  localStorage.setItem("idEliminar", id);
+  localStorage.setItem("idInsumo", id);
+}
+
+async function borraridInsumo() {
+  localStorage.removeItem('idInsumo');
 }
 
 async function eliminarInsumo() {
@@ -32,10 +36,6 @@ async function eliminarInsumo() {
       });
     }
   }
-}
-
-async function agregarCantidaInsumos(){
-
 }
 
 async function guardarInsumo() {
@@ -66,7 +66,9 @@ async function cargaContenidoInsumos() {
     document.querySelector("#encabezado-dinamico").innerHTML = htmlEncabezado;
 
     document.querySelector("#guardar-insumo").addEventListener("click", guardarInsumo);
-    
+    document.querySelector("#cancelar-insumo").addEventListener("click", borraridInsumo);
+    document.querySelector("#si-actualizar-insumo").addEventListener("click", actualizarInsumo);
+
     document.querySelector("#si-eliminar-insumo").addEventListener("click", eliminarInsumo);
 
   } catch (error) {
@@ -76,30 +78,34 @@ async function cargaContenidoInsumos() {
 }
 
 async function actualizarInsumo() {
-  const usuarioId = localStorage.getItem("idEliminar");
-  var actualizarNombre = document.querySelector("#actulizar-nombre").value;
-  var actualizarCorreo = document.querySelector("#actualizar-correo").value;
-  var actualizarRoolis = document.querySelector("#actualizar-rol").value;
-  if (actualizarNombre != '' && actualizarCorreo != '' && actualizarRoolis != '') {
-    let data = {
-      id: usuarioId,
-      nombre: document.querySelector("#actulizar-nombre").value,
-      correo: document.querySelector("#actualizar-correo").value,
-      rol_id: document.querySelector("#actualizar-rol").value,
+  const insumoId = localStorage.getItem("idEliminar");
+  var actualizarCantidad  = parseInt(document.querySelector("#nueva-cantidad").value);
+  const insumo = await obtenerInsumos();
+  if (actualizarCantidad != '' ) {
+    for (let index = 0; index < insumo.length; index++) {
+      if (insumoId == insumo[index].id) {
+        let data = {
+          id: insumoId,
+          nombre: insumo[index].nombre,
+          detalles: insumo[index].detalles,
+          unidades: actualizarCantidad,
+        }
+        fetch("https://aydfincas.herokuapp.com/insumos", {
+          method: "PUT",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => {
+          cargarVistaGestionInsumos();
+          localStorage.removeItem("idEliminarUsuario");
+        });
+      } 
     }
-    fetch("https://aydfincas.herokuapp.com/usuarios", {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => {
-      cargarVistaGestionUsuarios();
-      localStorage.removeItem("idEliminarUsuario");
-    });
-  } else {
-    alert("Complete todos los cambios");
+  }else {
+    alert("complete todos los campos");
   }
+  
 }
 
 async function cargarVistaGestionInsumos() {
@@ -116,17 +122,12 @@ async function cargarVistaGestionInsumos() {
                       <td>${u.estado ? "Activa" : "Inactiva"}</td>
                       <td>${u.create_at}</td>
                       <td style="margin:center;">
-                            <a class="float-right mr-3" data-toggle="modal" href="#ventana3" >
+                            <a title="Agregar" class="float-right mr-3" data-toggle="modal" href="#ventana3" >
                               <button class="float-right btn btn-primary" onclick="guardarIdinsumo(${u.id})">
                               <i class="fas fa-plus"></i>
                               </button>
                             </a>
-                            <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
-                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdinsumo(${u.id})">
-                                <i class="fas fa-trash-alt"></i>
-                              </button>
-                            </a>
-                            <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
+                            <a title="Eliminar" class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
                               <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdinsumo(${u.id})">
                                 <i class="fas fa-trash-alt"></i>
                               </button>
