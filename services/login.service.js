@@ -14,3 +14,11 @@ async function login() {
 }
 
 document.querySelector("#btn-submit").addEventListener("click", login);
+
+function iniciar() {
+  localStorage.setItem(
+    "api",
+    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/"
+  );
+}
+iniciar();

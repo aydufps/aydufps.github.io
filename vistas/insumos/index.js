@@ -17,15 +17,16 @@ async function guardarIdinsumo(id) {
 }
 
 async function borraridInsumo() {
-  localStorage.removeItem('idInsumo');
+  localStorage.removeItem("idInsumo");
 }
 
 async function eliminarInsumo() {
+  const url = localStorage.getItem("api");
   var id = localStorage.getItem("idEliminar");
   const insumo = await obtenerInsumos();
   for (let index = 0; index < insumo.length; index++) {
     if (insumo[index].id == id) {
-      fetch("https://aydfincas.herokuapp.com/insumo/" + id, {
+      fetch(url + "insumo/" + id, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -39,12 +40,13 @@ async function eliminarInsumo() {
 }
 
 async function guardarInsumo() {
+  const url = localStorage.getItem("api");
   let data = {
     nombre: document.querySelector("#nombre-inusumo").value,
     detalles: document.querySelector("#detalle-insumo").value,
     unidades: document.querySelector("#cantidad-insumo").value,
   };
-  let insumo = await fetch("https://aydfincas.herokuapp.com/insumos", {
+  let insumo = await fetch(url + "insumos", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -65,12 +67,19 @@ async function cargaContenidoInsumos() {
     document.querySelector("#contenido-dinamico").innerHTML = html;
     document.querySelector("#encabezado-dinamico").innerHTML = htmlEncabezado;
 
-    document.querySelector("#guardar-insumo").addEventListener("click", guardarInsumo);
-    document.querySelector("#cancelar-insumo").addEventListener("click", borraridInsumo);
-    document.querySelector("#si-actualizar-insumo").addEventListener("click", actualizarInsumo);
+    document
+      .querySelector("#guardar-insumo")
+      .addEventListener("click", guardarInsumo);
+    document
+      .querySelector("#cancelar-insumo")
+      .addEventListener("click", borraridInsumo);
+    document
+      .querySelector("#si-actualizar-insumo")
+      .addEventListener("click", actualizarInsumo);
 
-    document.querySelector("#si-eliminar-insumo").addEventListener("click", eliminarInsumo);
-
+    document
+      .querySelector("#si-eliminar-insumo")
+      .addEventListener("click", eliminarInsumo);
   } catch (error) {
     console.log(error);
     alert("no entra al sistema de encabesado");
@@ -78,10 +87,13 @@ async function cargaContenidoInsumos() {
 }
 
 async function actualizarInsumo() {
+  const url = localStorage.getItem("api");
   const insumoId = localStorage.getItem("idEliminar");
-  var actualizarCantidad  = parseInt(document.querySelector("#nueva-cantidad").value);
+  var actualizarCantidad = parseInt(
+    document.querySelector("#nueva-cantidad").value
+  );
   const insumo = await obtenerInsumos();
-  if (actualizarCantidad != '' ) {
+  if (actualizarCantidad != "") {
     for (let index = 0; index < insumo.length; index++) {
       if (insumoId == insumo[index].id) {
         let data = {
@@ -89,8 +101,8 @@ async function actualizarInsumo() {
           nombre: insumo[index].nombre,
           detalles: insumo[index].detalles,
           unidades: actualizarCantidad,
-        }
-        fetch("https://aydfincas.herokuapp.com/insumos", {
+        };
+        fetch(url + "insumos", {
           method: "PUT",
           body: JSON.stringify(data),
           headers: {
@@ -100,12 +112,11 @@ async function actualizarInsumo() {
           cargarVistaGestionInsumos();
           localStorage.removeItem("idEliminarUsuario");
         });
-      } 
+      }
     }
-  }else {
+  } else {
     alert("complete todos los campos");
   }
-  
 }
 
 async function cargarVistaGestionInsumos() {
@@ -123,12 +134,16 @@ async function cargarVistaGestionInsumos() {
                       <td>${u.create_at}</td>
                       <td style="margin:center;">
                             <a title="Agregar" class="float-right mr-3" data-toggle="modal" href="#ventana3" >
-                              <button class="float-right btn btn-primary" onclick="guardarIdinsumo(${u.id})">
+                              <button class="float-right btn btn-primary" onclick="guardarIdinsumo(${
+                                u.id
+                              })">
                               <i class="fas fa-plus"></i>
                               </button>
                             </a>
                             <a title="Eliminar" class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
-                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdinsumo(${u.id})">
+                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdinsumo(${
+                                u.id
+                              })">
                                 <i class="fas fa-trash-alt"></i>
                               </button>
                             </a>

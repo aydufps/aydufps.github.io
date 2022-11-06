@@ -13,6 +13,7 @@ async function obtenerUsuarios() {
 }
 
 async function guardarUsuario() {
+  const url = localStorage.getItem("api");
   let data = {
     name: document.querySelector("#nombre-personal").value,
     rol_id: document.querySelector("#rol-personal").value,
@@ -39,18 +40,23 @@ async function guardarIdUsuario(id) {
 }
 
 async function actualizarInformacionUsuario() {
+  const url = localStorage.getItem("api");
   const usuarioId = localStorage.getItem("idEliminar");
   var actualizarNombre = document.querySelector("#actulizar-nombre").value;
   var actualizarCorreo = document.querySelector("#actualizar-correo").value;
   var actualizarRoolis = document.querySelector("#actualizar-rol").value;
-  if (actualizarNombre != '' && actualizarCorreo != '' && actualizarRoolis != '') {
+  if (
+    actualizarNombre != "" &&
+    actualizarCorreo != "" &&
+    actualizarRoolis != ""
+  ) {
     let data = {
       id: usuarioId,
       nombre: document.querySelector("#actulizar-nombre").value,
       correo: document.querySelector("#actualizar-correo").value,
       rol_id: document.querySelector("#actualizar-rol").value,
-    }
-    fetch("https://aydfincas.herokuapp.com/usuarios", {
+    };
+    fetch(url + "usuarios", {
       method: "PUT",
       body: JSON.stringify(data),
       headers: {
@@ -66,12 +72,13 @@ async function actualizarInformacionUsuario() {
 }
 
 async function eliminarUsuario() {
+  const url = localStorage.getItem("api");
   var id = localStorage.getItem("idEliminar");
   const usuario = await obtenerUsuarios();
   for (let index = 0; index < usuario.length; index++) {
     if (usuario[index].id == id) {
       if (usuario[index].rol_id != 1) {
-        fetch("https://aydfincas.herokuapp.com/usuario/" + id, {
+        fetch(url + "usuario/" + id, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -141,12 +148,16 @@ async function cargarVistaGestionUsuarios() {
                         <td>${u.estado ? "Activa" : "Inactiva"}</td>
                         <td style="margin:center;">
                             <a class="float-right mr-3" data-toggle="modal" href="#ventana3" >
-                              <button class="float-right btn btn-primary" onclick="guardarIdUsuario(${u.id})">
+                              <button class="float-right btn btn-primary" onclick="guardarIdUsuario(${
+                                u.id
+                              })">
                                 <i class="fas fa-edit"></i>
                               </button>
                             </a>
                             <a class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
-                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdUsuario(${u.id})">
+                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdUsuario(${
+                                u.id
+                              })">
                                 <i class="fas fa-trash-alt"></i>
                               </button>
                             </a>
@@ -181,13 +192,9 @@ async function cargarVistaGestionUsuarios() {
         },
       ],
     });
-
   } catch (error) {
     console.log(error);
   }
 }
 
-
-window.onload = async function () {
-
-}
+window.onload = async function () {};
