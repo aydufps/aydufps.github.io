@@ -3,7 +3,8 @@ console.log("ijijijijij");
 const animalesVenta = "";
 
 async function obtenerAnimalesVenta(){
-    let data = await fetch('https://aydfincas.herokuapp.com/' + "animales-en-venta", {
+  const url = localStorage.getItem("api");
+    let data = await fetch(url + "animales-en-venta", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -61,6 +62,14 @@ async function crearCatalogo(){
       agregarFotoAlModal(animalesVenta[animal].id , `imagenventa-${animalesVenta[animal].id}` );
     }
 }
+
+function iniciar() {
+  localStorage.setItem(
+    "api",
+    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/"
+  );
+}
+iniciar();
 
 
 
