@@ -1,4 +1,4 @@
-API = "https://aydfincas.herokuapp.com/";
+API = "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/";
 var headers = new Headers();
 
 async function get(url) {
@@ -11,7 +11,7 @@ async function get(url) {
   }).then((res) => res.json());
 }
 
-async function deleted(url,id) {
+async function deleted(url, id) {
   return fetch(API + url + "/" + id, {
     method: "DELETE",
     headers: {
@@ -39,4 +39,3 @@ async function put(url, data) {
     },
   }).then((res) => res.json());
 }
-
