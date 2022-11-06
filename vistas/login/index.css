@@ -87,6 +87,10 @@ input:focus {
   margin-left: 4px;
 }
 
+#botones-encabezado{
+  text-align: right;
+}
+
 /** ------------------- */
 /** POPUP */
 /** ------------------- */

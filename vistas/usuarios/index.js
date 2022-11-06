@@ -15,17 +15,17 @@ async function obtenerUsuarios() {
 async function guardarUsuario() {
   let data = {
     name: document.querySelector("#nombre-personal").value,
-    rol_id: document.querySelector("#rol-persomnal").value,
+    rol_id: document.querySelector("#rol-personal").value,
     email: document.querySelector("#email-personal").value,
   };
-
-  let usuario = await fetch("https://aydfincas.herokuapp.com/usuarios", {
-    method: "POST",
+  console.log(data);
+  let usuario = await fetch('https://aydfincas.herokuapp.com/usuarios', {
+    method: 'POST',
     body: JSON.stringify(data),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-  }).then((res) => res.json());
+  }).then(res => res.json());
   cargarVistaGestionUsuarios();
   console.log(usuario);
 }
@@ -129,7 +129,7 @@ async function cargarVistaGestionUsuarios() {
         usuario[index].rol_id = "Administrador";
       } else if (usuario[index].rol_id == 2) {
         usuario[index].rol_id = "Capataz";
-      } else {
+      } else if (usuario[index].rol_id == 3){
         usuario[index].rol_id = "Veterinario";
       }
     }

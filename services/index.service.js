@@ -31,9 +31,9 @@ async function cargarDatosDeUsuario() {
 async function existeUnLogueado() {
   try {
     const usuario = localStorage.getItem('usuario');
+    console.log(usuario);
     if (!usuario) {
       window.location.replace('/vistas/login/login.html');
-      alert('No se encuentra registardo');
     }
   } catch (error) {
     console.log(error);
@@ -169,6 +169,7 @@ async function guardarVacunaAnimal() {
       }).then(res => res.json());
     }
   }
+  cargarVistaGestionAnimal();
 }
 
 async function cargaContenidoAnimal() {
@@ -237,9 +238,9 @@ async function cargarVistaGestionAnimal() {
                             <i class="fas fa-trash-alt"></i>
                           </button>
                         </a>
-                        ${ usuario.id == 1 ? `<a class="float-right mr-3" data-toggle="modal" href="#venta-modal-animal" id="buton-eliminar">
-                        <button class="float-right btn btn-${u.enVenta ? 'success' : 'danger' } btn-sm" id="boton-eliminar-animal" onclick="guardaridAnimalVenta(${u.id})">
-                           ${u.enVenta ? 'Colocar Venta' : 'Cancelar Venta' } <i class="fas fa-dollar-sign"></i>
+                        ${ usuario.rol_id == 1 ? `<a class="float-right mr-3" data-toggle="modal" href="#venta-modal-animal" id="buton-eliminar">
+                        <button class="float-right btn btn-${u.enVenta ? 'danger' : 'success' } btn-sm" id="boton-eliminar-animal" onclick="guardaridAnimalVenta(${u.id})">
+                           ${u.enVenta ? 'Cancelar Venta' : 'Colocar Venta' } <i class="fas fa-dollar-sign"></i>
                         </button>
                         </a>` : '' } 
                     </td>
@@ -351,6 +352,7 @@ async function guardarIdAnimal(idAnimal) {
                 </tr>
                 `
   );
+  console.log(filas);
   var tablaVacunas = `<table class="table">
                         <thead>
                           <tr>

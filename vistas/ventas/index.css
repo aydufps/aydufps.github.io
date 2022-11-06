@@ -1,0 +1,13 @@
+#botones-encabezado {
+    text-align: right;
+}
+
+#titulo {
+    text-align: center;
+}
+
+#nombre-animal-venta {
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+}

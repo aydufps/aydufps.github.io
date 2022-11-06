@@ -75,10 +75,22 @@ async function cargarVistaGestionVacunas() {
             (u, i) => `<tr>
                         <td>${u.id}</td>
                         <td>${u.nombre}</td>
-                        <td>${u.detalles}</td>
-                        <td>${u.unidades}</td>
-                        <td>${u.create_at}</td>
-                        <td>${u.fecha_vencimiento_lote}</td>
+                        <td >${u.detalles}</td>
+                        <td style="text-align: center;">${u.unidades}</td>
+                        <td style="text-align: center;">${u.create_at}</td>
+                        <td style="text-align: center;">${u.fecha_vencimiento_lote}</td>
+                        <td style="text-align: center;">
+                            <a title="Agregar" class="float-right mr-3" data-toggle="modal" href="#ventana3" >
+                              <button class="float-right btn btn-primary" onclick="guardarIdinsumo(${u.id})">
+                              <i class="fas fa-plus"></i>
+                              </button>
+                            </a>
+                            <a title="Eliminar" class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
+                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdinsumo(${u.id})">
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                            </a>
+                        </td>
                       </tr>`
         );
         document.querySelector("#contenido-dinamico").innerHTML = html;
