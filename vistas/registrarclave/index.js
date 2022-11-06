@@ -1,4 +1,5 @@
 async function registrarClave() {
+  const url = localStorage.getItem("api");
   var clave = document.querySelector("#nueva-clave").value;
   var conClave = document.querySelector("#confirmar-nueva-clave").value;
   if (clave != "" && clave != " " && clave != "  ") {
@@ -11,16 +12,13 @@ async function registrarClave() {
         clave: conClave,
         id: idUsuario,
       };
-      const respuesta = await fetch(
-        "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/nueva_clave",
-        {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((res) => res.json());
+      const respuesta = await fetch(url + "nueva_clave", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => res.json());
       let string = "<div class='alert alert-info' role='alert'>";
       string += respuesta;
       string += "<a href='/vistas/login/login.html'> Iniciar Sesion</a>";

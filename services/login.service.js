@@ -7,9 +7,17 @@ async function login() {
   if (usuario) {
     localStorage.setItem("usuario", JSON.stringify(usuario));
     window.location.replace("../../index.html");
-  }else{
+  } else {
     alert("No se encuentra registardo");
   }
 }
 
 document.querySelector("#btn-submit").addEventListener("click", login);
+
+function iniciar() {
+  localStorage.setItem(
+    "api",
+    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/"
+  );
+}
+iniciar();

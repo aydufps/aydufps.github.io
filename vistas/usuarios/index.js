@@ -13,22 +13,20 @@ async function obtenerUsuarios() {
 }
 
 async function guardarUsuario() {
+  const url = localStorage.getItem("api");
   let data = {
     name: document.querySelector("#nombre-personal").value,
     rol_id: document.querySelector("#rol-persomnal").value,
     email: document.querySelector("#email-personal").value,
   };
 
-  let usuario = await fetch(
-    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/usuarios",
-    {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  ).then((res) => res.json());
+  let usuario = await fetch(url + "usuarios", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
   cargarVistaGestionUsuarios();
   console.log(usuario);
 }
@@ -42,6 +40,7 @@ async function guardarIdUsuario(id) {
 }
 
 async function actualizarInformacionUsuario() {
+  const url = localStorage.getItem("api");
   const usuarioId = localStorage.getItem("idEliminar");
   var actualizarNombre = document.querySelector("#actulizar-nombre").value;
   var actualizarCorreo = document.querySelector("#actualizar-correo").value;
@@ -57,16 +56,13 @@ async function actualizarInformacionUsuario() {
       correo: document.querySelector("#actualizar-correo").value,
       rol_id: document.querySelector("#actualizar-rol").value,
     };
-    fetch(
-      "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/usuarios",
-      {
-        method: "PUT",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((res) => {
+    fetch(url + "usuarios", {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
       cargarVistaGestionUsuarios();
       localStorage.removeItem("idEliminarUsuario");
     });
@@ -76,21 +72,18 @@ async function actualizarInformacionUsuario() {
 }
 
 async function eliminarUsuario() {
+  const url = localStorage.getItem("api");
   var id = localStorage.getItem("idEliminar");
   const usuario = await obtenerUsuarios();
   for (let index = 0; index < usuario.length; index++) {
     if (usuario[index].id == id) {
       if (usuario[index].rol_id != 1) {
-        fetch(
-          "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/usuario/" +
-            id,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        ).then((res) => {
+        fetch(url + "usuario/" + id, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => {
           cargarVistaGestionUsuarios();
           localStorage.removeItem("idEliminarUsuario");
         });

@@ -21,20 +21,17 @@ async function borraridInsumo() {
 }
 
 async function eliminarInsumo() {
+  const url = localStorage.getItem("api");
   var id = localStorage.getItem("idEliminar");
   const insumo = await obtenerInsumos();
   for (let index = 0; index < insumo.length; index++) {
     if (insumo[index].id == id) {
-      fetch(
-        "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/insumo/" +
-          id,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((res) => {
+      fetch(url + "insumo/" + id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
         cargarVistaGestionInsumos();
         localStorage.removeItem("idEliminar");
       });
@@ -43,21 +40,19 @@ async function eliminarInsumo() {
 }
 
 async function guardarInsumo() {
+  const url = localStorage.getItem("api");
   let data = {
     nombre: document.querySelector("#nombre-inusumo").value,
     detalles: document.querySelector("#detalle-insumo").value,
     unidades: document.querySelector("#cantidad-insumo").value,
   };
-  let insumo = await fetch(
-    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/insumos",
-    {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  ).then((res) => res.json());
+  let insumo = await fetch(url + "insumos", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
   cargarVistaGestionInsumos();
   console.log(insumo);
 }
@@ -92,6 +87,7 @@ async function cargaContenidoInsumos() {
 }
 
 async function actualizarInsumo() {
+  const url = localStorage.getItem("api");
   const insumoId = localStorage.getItem("idEliminar");
   var actualizarCantidad = parseInt(
     document.querySelector("#nueva-cantidad").value
@@ -106,16 +102,13 @@ async function actualizarInsumo() {
           detalles: insumo[index].detalles,
           unidades: actualizarCantidad,
         };
-        fetch(
-          "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/insumos",
-          {
-            method: "PUT",
-            body: JSON.stringify(data),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        ).then((res) => {
+        fetch(url + "insumos", {
+          method: "PUT",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => {
           cargarVistaGestionInsumos();
           localStorage.removeItem("idEliminarUsuario");
         });

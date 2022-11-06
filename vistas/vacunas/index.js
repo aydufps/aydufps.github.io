@@ -10,6 +10,7 @@ async function obtenerVacunas() {
   }
 }
 async function guardarVacuna() {
+  const url = localStorage.getItem("api");
   let data = {
     nombre: document.querySelector("#nombre-vacuna").value,
     detalles: document.querySelector("#detalle-vacuna").value,
@@ -17,16 +18,13 @@ async function guardarVacuna() {
       .value,
     unidades: document.querySelector("#cantidad-vacuna").value,
   };
-  let insumo = await fetch(
-    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/vacunas",
-    {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  ).then((res) => res.json());
+  let insumo = await fetch(url + "vacunas", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
   cargarVistaGestionVacunas();
   console.log(insumo);
 }

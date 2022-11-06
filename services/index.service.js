@@ -70,6 +70,7 @@ async function agregarAnimalSelect() {
 }
 
 async function guardarAnimal() {
+  const url = localStorage.getItem("api");
   let data = {
     nombre: document.querySelector("#nombre-animal").value,
     genero: document.querySelector("#genero-animal").value == "true",
@@ -78,16 +79,13 @@ async function guardarAnimal() {
     madre_id: document.querySelector("#select-madre").value || null,
     fecha_nacimiento: document.getElementById("fecha-nacimiento-animal").value,
   };
-  let animal = await fetch(
-    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/animales",
-    {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  ).then((res) => res.json());
+  let animal = await fetch(url + "animales", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
   cargarVistaGestionAnimal();
 }
 
@@ -96,6 +94,7 @@ async function guardaridAnimal(idAnimal) {
 }
 
 async function guardaridAnimalVenta(idAnimal) {
+  const url = localStorage.getItem("api");
   localStorage.setItem("idEliminar", idAnimal);
   let data = localStorage.getItem("animales");
   if (!data) return;
@@ -110,16 +109,12 @@ async function guardaridAnimalVenta(idAnimal) {
 
 async function eliminarAnimal() {
   const id = localStorage.getItem("idEliminar");
-  fetch(
-    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/animal/" +
-      id,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  ).then((res) => {
+  fetch(url + "animal/" + id, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
     cargarVistaGestionAnimal();
     localStorage.removeItem("idEliminar");
   });
@@ -145,22 +140,20 @@ async function agregarSelectVacuna() {
 }
 
 async function guardarVacunaAnimal() {
+  const url = localStorage.getItem("api");
   id_vacuna = document.querySelector("#selected-vacuna").value;
   console.log(id_vacuna);
   let data = {
     animal_id: localStorage.getItem("idEliminar"),
     vacuna_id: document.querySelector("#selected-vacuna").value,
   };
-  fetch(
-    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/animales/vacunas",
-    {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  ).then((res) => res.json());
+  fetch(url + "animales/vacunas", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
   const vacunas = await obtenerVacunas();
   for (let index = 0; index < vacunas.length; index++) {
     if (id_vacuna == vacunas[index].id) {
@@ -172,16 +165,13 @@ async function guardarVacunaAnimal() {
         unidades: vacunas[index].unidades - 1,
         fecha_vencimiento_lote: vacunas[index].fecha_vencimiento_lote,
       };
-      fetch(
-        "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/vacunas",
-        {
-          method: "PUT",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      ).then((res) => res.json());
+      fetch(url + "vacunas", {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => res.json());
     }
   }
 }
@@ -454,6 +444,7 @@ async function agregarFotoAlModal() {
 }
 
 async function colocarVentaAnimal() {
+  const url = localStorage.getItem("api");
   const idAnimal = localStorage.getItem("idEliminar");
   let data = localStorage.getItem("animales");
   if (!data) return;
@@ -467,15 +458,12 @@ async function colocarVentaAnimal() {
     id: idAnimal,
     enVenta: !item.enVenta,
   };
-  await fetch(
-    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/animales",
-    {
-      method: "PUT",
-      body: JSON.stringify(parametros),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  await fetch(url + "animales", {
+    method: "PUT",
+    body: JSON.stringify(parametros),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   cargarVistaGestionAnimal();
 }

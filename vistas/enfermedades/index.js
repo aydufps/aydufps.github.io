@@ -11,20 +11,18 @@ async function obtenerEnfermedades() {
 }
 
 async function guardarEnfermedad() {
+  const url = localStorage.getItem("api");
   let data = {
     nombre: document.querySelector("#nombre-enfermedad").value,
     detalles: document.querySelector("#detalle-enfermedad").value,
   };
-  let insumo = await fetch(
-    "https://flask-service.4csvpc17p5v1q.us-east-1.cs.amazonlightsail.com/enfermedades",
-    {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  ).then((res) => res.json());
+  let insumo = await fetch(url + "enfermedades", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => res.json());
   cargarVistaGestionEnfermedades();
   console.log(insumo);
 }
