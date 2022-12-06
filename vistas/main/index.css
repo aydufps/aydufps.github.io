@@ -39,10 +39,12 @@ body {
 }
 
 #titulo>h4 {
-  text-align: center;
-  margin-left: -210px;
-  font: bold 36px Arial, Helvetica, sans-serif;
-  line-height: 60px;
+  display: flex;
+  
+  /* text-align: center; */
+  /* margin-left: -210px; */
+  font: bold 26px Arial, Helvetica, sans-serif;
+  /* line-height: 60px; */
   color: rgb(255, 255, 255);
   text-transform: uppercase;
 }

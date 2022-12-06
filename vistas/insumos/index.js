@@ -88,14 +88,16 @@ async function cargaContenidoInsumos() {
 
 async function actualizarInsumo() {
   const url = localStorage.getItem("api");
-  const insumoId = localStorage.getItem("idEliminar");
+  const insumoId = localStorage.getItem("idInsumo");
   var actualizarCantidad = parseInt(
     document.querySelector("#nueva-cantidad").value
   );
   const insumo = await obtenerInsumos();
   if (actualizarCantidad != "") {
     for (let index = 0; index < insumo.length; index++) {
+      console.log(insumoId);
       if (insumoId == insumo[index].id) {
+        console.log("444");
         let data = {
           id: insumoId,
           nombre: insumo[index].nombre,
@@ -117,6 +119,7 @@ async function actualizarInsumo() {
   } else {
     alert("complete todos los campos");
   }
+  // cargarVistaGestionInsumos();
 }
 
 async function cargarVistaGestionInsumos() {

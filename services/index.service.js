@@ -30,10 +30,10 @@ async function cargarDatosDeUsuario() {
 
 async function existeUnLogueado() {
   try {
-    const usuario = localStorage.getItem('usuario');
+    const usuario = localStorage.getItem("usuario");
     console.log(usuario);
     if (!usuario) {
-      window.location.replace('/vistas/login/login.html');
+      window.location.replace("/vistas/login/login.html");
     }
   } catch (error) {
     console.log(error);
@@ -86,6 +86,38 @@ async function guardarAnimal() {
       "Content-Type": "application/json",
     },
   }).then((res) => res.json());
+
+  const imput = document.querySelector("#fileUpload");
+  const file = imput.files[0];
+  // const file = JSON.parse(localStorage.getItem("imagen"));
+  if (file) {
+    if (file.type === "image/jpg" || file.type === "image/jpeg") {
+      const path = "animales/" + animal.id + "/profile.jpg";
+      let storageRef = firebase.storage().ref();
+      let fotoRef = storageRef.child(path);
+      Swal.showLoading();
+      fotoRef
+        .putString(await toBase64(file), "data_url")
+        .then(async function () {
+          await agregarFotoAlModal();
+          Swal.fire({
+            icon: "success",
+            title: "Listo",
+            text: "Foto actualizada",
+          });
+        });
+    } else {
+      console.log(
+        "Error",
+        "Solo se pueden cargar imagenes con formato jpg o jpge"
+      );
+      Swal.fire({
+        icon: "error",
+        title: "Advertencia",
+        text: "Solo se pueden cargar imagenes con formato jpg o jpge",
+      });
+    }
+  }
   cargarVistaGestionAnimal();
 }
 
@@ -108,7 +140,9 @@ async function guardaridAnimalVenta(idAnimal) {
 }
 
 async function eliminarAnimal() {
+  const url = localStorage.getItem("api");
   const id = localStorage.getItem("idEliminar");
+  console.log(id);
   fetch(url + "animal/" + id, {
     method: "DELETE",
     headers: {
@@ -141,40 +175,60 @@ async function agregarSelectVacuna() {
 
 async function guardarVacunaAnimal() {
   const url = localStorage.getItem("api");
+  var validarVacuna = false;
   id_vacuna = document.querySelector("#selected-vacuna").value;
-  console.log(id_vacuna);
-  let data = {
-    animal_id: localStorage.getItem("idEliminar"),
-    vacuna_id: document.querySelector("#selected-vacuna").value,
-  };
-  fetch(url + "animales/vacunas", {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((res) => res.json());
-  const vacunas = await obtenerVacunas();
-  for (let index = 0; index < vacunas.length; index++) {
-    if (id_vacuna == vacunas[index].id) {
-      let data = {
-        id: vacunas[index].id,
-        nombre: vacunas[index].nombre,
-        detalles: vacunas[index].detalles,
-        estado: vacunas[index].estado,
-        unidades: vacunas[index].unidades - 1,
-        fecha_vencimiento_lote: vacunas[index].fecha_vencimiento_lote,
-      };
-      fetch(url + "vacunas", {
-        method: "PUT",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((res) => res.json());
+  id_animal = localStorage.getItem("idEliminar");
+  console.log(id_vacuna, id_animal);
+  const animales = await obtenerAnimales();
+  console.log(animales.id);
+
+  for (let index = 0; index < animales.length; index++) {
+    if (animales[index].id == id_animal) {
+      const vacunasAnimal = animales[index].vacunas;
+      for (let inicio = 0; inicio < vacunasAnimal.length; inicio++) {
+        if (vacunasAnimal[inicio].vacuna_id == id_vacuna) {
+          console.log("El animal ya tiene esta vacuna");
+          validarVacuna = true;
+        }
+      }
+      
     }
   }
-  cargarVistaGestionAnimal();
+  console.log(validarVacuna);
+  if(validarVacuna == false) {
+     let data = {
+       animal_id: localStorage.getItem("idEliminar"),
+       vacuna_id: document.querySelector("#selected-vacuna").value,
+     };
+     fetch(url + "animales/vacunas", {
+       method: "POST",
+       body: JSON.stringify(data),
+       headers: {
+         "Content-Type": "application/json",
+       },
+     }).then((res) => res.json());
+     const vacunas = await obtenerVacunas();
+     for (let index = 0; index < vacunas.length; index++) {
+       if (id_vacuna == vacunas[index].id) {
+         let data = {
+           id: vacunas[index].id,
+           nombre: vacunas[index].nombre,
+           detalles: vacunas[index].detalles,
+           estado: vacunas[index].estado,
+           unidades: vacunas[index].unidades - 1,
+           fecha_vencimiento_lote: vacunas[index].fecha_vencimiento_lote,
+         };
+         fetch(url + "vacunas", {
+           method: "PUT",
+           body: JSON.stringify(data),
+           headers: {
+             "Content-Type": "application/json",
+           },
+         }).then((res) => res.json());
+       }
+     }
+     cargarVistaGestionAnimal();
+  }
 }
 
 async function cargaContenidoAnimal() {
@@ -230,7 +284,9 @@ async function cargarVistaGestionAnimal() {
     let filas = animales.map(
       (u, i) => `<tr>
                     <td>${u.nombre}</td>
-                    <td>${u.detalles}</td>
+                    <td style="max-width: 200px; overflow: auto; margin: 0px">${
+                      u.detalles
+                    }</td>
                     <td>${u.fecha_nacimiento}</td>
                     <td>${u.genero ? "Macho" : "Hembra"}</td>
                     <td>${
@@ -268,9 +324,17 @@ async function cargarVistaGestionAnimal() {
                             <i class="fas fa-trash-alt"></i>
                           </button>
                         </a>
-                        ${ usuario.rol_id == 1 ? `<a class="float-right mr-3" data-toggle="modal" href="#venta-modal-animal" id="buton-eliminar">
-                        <button class="float-right btn btn-${u.enVenta ? 'danger' : 'success' } btn-sm" id="boton-eliminar-animal" onclick="guardaridAnimalVenta(${u.id})">
-                           ${u.enVenta ? 'Cancelar Venta' : 'Colocar Venta' } <i class="fas fa-dollar-sign"></i>
+                        ${
+                          usuario.rol_id == 1
+                            ? `<a class="float-right mr-3" data-toggle="modal" href="#venta-modal-animal" id="buton-eliminar">
+                        <button class="float-right btn btn-${
+                          u.enVenta ? "danger" : "success"
+                        } btn-sm" id="boton-eliminar-animal" onclick="guardaridAnimalVenta(${
+                                u.id
+                              })">
+                           ${
+                             u.enVenta ? "Cancelar Venta" : "Colocar Venta"
+                           } <i class="fas fa-dollar-sign"></i>
                         </button>
                         </a>`
                             : ""
@@ -313,6 +377,17 @@ async function cargarVistaGestionAnimal() {
 }
 
 window.onload = async function () {
+  const animales = await obtenerAnimales();
+  const vacunas = await obtenerVacunas();
+  const insumos = await obtenerInsumos();
+  const enfermedades = await obtenerEnfermedades();
+  const usuario = await obtenerUsuarios();
+  var cantidadVacunas = 0;
+  console.log(cantidadVacunas);
+  for (let index = 0; index < vacunas.length; index++) {
+    cantidadVacunas += parseInt(vacunas[index].unidades);
+  }
+
   await existeUnLogueado();
   await iniciarPagina();
   document
@@ -330,6 +405,48 @@ window.onload = async function () {
   document
     .querySelector("#btnVacunas")
     .addEventListener("click", cargarVistaGestionVacunas);
+  document.querySelector("#animales").innerHTML = `<div class="card" >
+      <div class="card">
+        <div class="card-header">
+          Animales registrados
+        </div>
+      <div class="card-body text-center">
+        <h1 class="card-title">${animales.length}</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+      <div class="card-footer text-muted">
+        2 days ago
+      </div>
+    </div>`;
+  document.querySelector("#usuarios").innerHTML = `<div class="card" >
+      <div class="card">
+        <div class="card-header">
+          Usuarios registrados
+        </div>
+      <div class="card-body text-center">
+        <h1 class="card-title">${usuario.length}</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+      <div class="card-footer text-muted">
+        2 days ago
+      </div>
+    </div>`;
+  document.querySelector("#vacunas").innerHTML = `<div class="card" >
+      <div class="card">
+        <div class="card-header">
+          Vacunas registrados
+        </div>
+      <div class="card-body text-center">
+        <h1 class="card-title">${cantidadVacunas}</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+      <div class="card-footer text-muted">
+        2 days ago
+      </div>
+    </div>`;
 };
 
 document
@@ -348,6 +465,8 @@ async function toBase64(file) {
 async function convertImage(input, id) {
   const animalId = localStorage.getItem("idAnimal");
   const file = input.files[0];
+  // localStorage.setItem("imagen",JSON.stringify(file));
+  return;
   if (file.type === "image/jpg" || file.type === "image/jpeg") {
     const path = "animales/" + animalId + "/profile.jpg";
     let storageRef = firebase.storage().ref();
@@ -373,7 +492,7 @@ async function convertImage(input, id) {
     });
   }
 }
-
+// Colocar la informacion en el modal de visualizacion detalles
 async function guardarIdAnimal(idAnimal) {
   document
     .querySelector("#foto-animal")
@@ -425,6 +544,7 @@ async function guardarIdAnimal(idAnimal) {
   await agregarFotoAlModal();
 }
 
+// Agregar foto al modal de detalles
 async function agregarFotoAlModal() {
   const id = localStorage.getItem("idAnimal");
   const storageRef = firebase.storage().ref();
@@ -435,8 +555,29 @@ async function agregarFotoAlModal() {
       document.querySelector("#foto-animal").setAttribute("src", url);
     })
     .catch((error) => {});
+  localStorage.removeItem("idAnimal");
 }
 
+// Agregar foto al modal de agregar animal
+async function agregarFoto() {
+  document
+    .querySelector("#agregar-foto-animal")
+    .setAttribute(
+      "src",
+      "https://previews.123rf.com/images/godruma/godruma1710/godruma171000086/87282077-vista-de-perfil-animal-de-longitud-completa-de-bull-en-vaca-muscular-marr%C3%B3n.jpg?fj=1"
+    );
+  const id = localStorage.getItem("idAnimal");
+  const storageRef = firebase.storage().ref();
+  storageRef
+    .child(`animales/${id}/profile.jpg`)
+    .getDownloadURL()
+    .then((url) => {
+      document.querySelector("#agregar-foto-animal").setAttribute("src", url);
+    })
+    .catch((error) => {});
+}
+
+//Colocar en venta el animal
 async function colocarVentaAnimal() {
   const url = localStorage.getItem("api");
   const idAnimal = localStorage.getItem("idEliminar");

@@ -9,6 +9,15 @@ async function obtenerVacunas() {
     return data;
   }
 }
+
+async function guardarIdvacuna(id) {
+  localStorage.setItem("idVacuna", id);
+}
+
+async function borraridvacuna() {
+  localStorage.removeItem("idVacuna");
+}
+
 async function guardarVacuna() {
   const url = localStorage.getItem("api");
   let data = {
@@ -46,6 +55,41 @@ async function fechaActual() {
     ano + "-" + mes + "-" + dia;
 }
 
+async function actualizarVacunas() {
+  const url = localStorage.getItem("api");
+  const vacunaId = localStorage.getItem("idVacuna");
+  var actualizarCantidad = parseInt(
+    document.querySelector("#nueva-cantidad-vacuna").value
+  );
+  const vacunas = await obtenerVacunas();
+  if (actualizarCantidad != "") {
+    for (let index = 0; index < vacunas.length; index++) {
+      if (vacunaId == vacunas[index].id) {
+        let data = {
+          id: vacunaId,
+          nombre: vacunas[index].nombre,
+          detalles: vacunas[index].detalles,
+          unidades: actualizarCantidad,
+          fecha_vencimiento_lote: vacunas[index].fecha_vencimiento_lote,
+        };
+        fetch(url + "vacunas", {
+          method: "PUT",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => {
+          cargarVistaGestionVacunas();
+          // localStorage.removeItem("idEliminarUsuario");
+        });
+      }
+    }
+  } else {
+    alert("complete todos los campos");
+  }
+  // cargarVistaGestionInsumos();
+}
+
 async function cargaContenidoVacunas() {
   try {
     const url = `/vistas/vacunas/index.html`;
@@ -61,6 +105,9 @@ async function cargaContenidoVacunas() {
     document
       .querySelector("#guardar-vacuna")
       .addEventListener("click", guardarVacuna);
+    document
+      .querySelector("#si-actualizar-vacuna")
+      .addEventListener("click", actualizarVacunas);
   } catch (error) {
     console.log(error);
     alert("no entra al sistema de encabesado");
@@ -82,13 +129,13 @@ async function cargarVistaGestionVacunas() {
                         <td style="text-align: center;">${u.create_at}</td>
                         <td style="text-align: center;">${u.fecha_vencimiento_lote}</td>
                         <td style="text-align: center;">
-                            <a title="Agregar" class="float-right mr-3" data-toggle="modal" href="#ventana3" >
-                              <button class="float-right btn btn-primary" onclick="guardarIdinsumo(${u.id})">
+                            <a title="Agregar" class="float-right mr-3" data-toggle="modal" href="#ventana2" >
+                              <button class="float-right btn btn-primary" onclick="guardarIdvacuna(${u.id})">
                               <i class="fas fa-plus"></i>
                               </button>
                             </a>
-                            <a title="Eliminar" class="float-right mr-3" data-toggle="modal" href="#ventana2" id="buton-eliminar-usuario">
-                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdinsumo(${u.id})">
+                            <a title="Eliminar" class="float-right mr-3" data-toggle="modal" href="#ventana3" id="buton-eliminar-usuario">
+                              <button class="float-right btn btn-danger" id="btn-eliminar-usuario" onclick="guardarIdvacuna(${u.id})">
                                 <i class="fas fa-trash-alt"></i>
                               </button>
                             </a>
