@@ -37,17 +37,23 @@ async function crearCatalogo(){
     console.log(animalesVenta);
     let filas = animalesVenta.map(
         (u, i) => ` <div class="col-sm-4">
-                      <div class="card">
+                      <div class="card d-flex">
                           <img class="card-img-top" src="" id="imagenventa-${u.id}">
                         <div class="card-body">
                             <h5 class="card-title" id="nombre-animal-venta">${u.nombre}</h3>
-                            <p class="card-text" id="deatalle-animal-venta">${u.detalles}</p>
+                          <div class="row">
+                            <label for="formGroupExampleInput" class="form-label"><strong>Detalles</strong></label>
+                            <label class="mb-2" id="detalles-animal-venta">${u.detalles}</label>
+                          </div>
                           <div class="form-group">
                             <label for="formGroupExampleInput"><strong>Fecha de Nacimiento:</strong></label>
-                            <label class="" id="fechaNacimineto-animal-venta">${u.fecha_nacimiento}</label>
-                          </div><br>
+                            <label class="mb-1" id="fechaNacimineto-animal-venta">${format(new Date(u.fecha_nacimiento))}</label>
+                          </div>
                             <label for="formGroupExampleInput"><strong>Precio:</strong></label>
-                            <h6 id="precio-animal-venta">${u.precio || "N/A"}</h6>  
+                            <h6 id="precio-animal-venta">${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(u.precio) || "N/A"}</h6>  
+                        </div>
+                        <div class="card-footer">
+                          <bo>
                         </div>
                       </div>
                     </div>`

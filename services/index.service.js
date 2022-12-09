@@ -71,14 +71,26 @@ async function agregarAnimalSelect() {
 
 async function guardarAnimal() {
   const url = localStorage.getItem("api");
+  var nombre = document.querySelector("#nombre-animal").value;
+  var genero = document.querySelector("#genero-animal").value ; 
+  var detalles = document.querySelector("#detalles-animal").value;
+  var padre = document.querySelector("#select-padre").value;
+  var madre = document.querySelector("#select-madre").value;
+  var fecha = document.getElementById("fecha-nacimiento-animal").value;
+  console.log(genero);
+  if (nombre != '' && genero ) {
+    
+  }
+  return
   let data = {
-    nombre: document.querySelector("#nombre-animal").value,
-    genero: document.querySelector("#genero-animal").value == "true",
-    detalles: document.querySelector("#detalles-animal").value,
-    padre_id: document.querySelector("#select-padre").value || null,
-    madre_id: document.querySelector("#select-madre").value || null,
-    fecha_nacimiento: document.getElementById("fecha-nacimiento-animal").value,
+    nombre: nombre,
+    genero: genero == "true",
+    detalles: detalles,
+    padre_id: padre || null,
+    madre_id: madre || null,
+    fecha_nacimiento: fecha,
   };
+  console.log(data);
   let animal = await fetch(url + "animales", {
     method: "POST",
     body: JSON.stringify(data),
@@ -86,8 +98,7 @@ async function guardarAnimal() {
       "Content-Type": "application/json",
     },
   }).then((res) => res.json());
-
-  const imput = document.querySelector("#fileUpload");
+  const imput = document.querySelector("#fileUploadImgen");
   const file = imput.files[0];
   // const file = JSON.parse(localStorage.getItem("imagen"));
   if (file) {
@@ -126,7 +137,6 @@ async function guardaridAnimal(idAnimal) {
 }
 
 async function guardaridAnimalVenta(idAnimal) {
-  const url = localStorage.getItem("api");
   localStorage.setItem("idEliminar", idAnimal);
   let data = localStorage.getItem("animales");
   if (!data) return;
@@ -134,11 +144,15 @@ async function guardaridAnimalVenta(idAnimal) {
   const item = data.find((el) => el.id == idAnimal);
   if (!item) return;
   console.log(item);
+  if (item.enVenta == true) {
+    document.querySelector("#contenido-precio").style.display = "none";
+  }
   document.querySelector("#detalle-venta").textContent = item.enVenta
     ? "Deseas cancelar la venta"
     : "¿Desea colocar en venta el animal?";
 }
 
+// Eliminar un animal sino tiene vacunas
 async function eliminarAnimal() {
   const url = localStorage.getItem("api");
   const id = localStorage.getItem("idEliminar");
@@ -158,6 +172,7 @@ async function borraridAnimal() {
   localStorage.removeItem("idEliminar");
 }
 
+// agregar las vacunas registradas que tengan unidades posible al select
 async function agregarSelectVacuna() {
   var selectVacunaAnimal = document.getElementById("selected-vacuna");
   const vacunas = await obtenerVacunas();
@@ -173,6 +188,8 @@ async function agregarSelectVacuna() {
   }
 }
 
+// guardar la vacuna del animal en la base de datos y resta las unidades a 
+// la vacuna inyectada
 async function guardarVacunaAnimal() {
   const url = localStorage.getItem("api");
   var validarVacuna = false;
@@ -191,46 +208,46 @@ async function guardarVacunaAnimal() {
           validarVacuna = true;
         }
       }
-      
     }
   }
   console.log(validarVacuna);
-  if(validarVacuna == false) {
-     let data = {
-       animal_id: localStorage.getItem("idEliminar"),
-       vacuna_id: document.querySelector("#selected-vacuna").value,
-     };
-     fetch(url + "animales/vacunas", {
-       method: "POST",
-       body: JSON.stringify(data),
-       headers: {
-         "Content-Type": "application/json",
-       },
-     }).then((res) => res.json());
-     const vacunas = await obtenerVacunas();
-     for (let index = 0; index < vacunas.length; index++) {
-       if (id_vacuna == vacunas[index].id) {
-         let data = {
-           id: vacunas[index].id,
-           nombre: vacunas[index].nombre,
-           detalles: vacunas[index].detalles,
-           estado: vacunas[index].estado,
-           unidades: vacunas[index].unidades - 1,
-           fecha_vencimiento_lote: vacunas[index].fecha_vencimiento_lote,
-         };
-         fetch(url + "vacunas", {
-           method: "PUT",
-           body: JSON.stringify(data),
-           headers: {
-             "Content-Type": "application/json",
-           },
-         }).then((res) => res.json());
-       }
-     }
-     cargarVistaGestionAnimal();
+  if (validarVacuna == false) {
+    let data = {
+      animal_id: localStorage.getItem("idEliminar"),
+      vacuna_id: document.querySelector("#selected-vacuna").value,
+    };
+    fetch(url + "animales/vacunas", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => res.json());
+    const vacunas = await obtenerVacunas();
+    for (let index = 0; index < vacunas.length; index++) {
+      if (id_vacuna == vacunas[index].id) {
+        let data = {
+          id: vacunas[index].id,
+          nombre: vacunas[index].nombre,
+          detalles: vacunas[index].detalles,
+          estado: vacunas[index].estado,
+          unidades: vacunas[index].unidades - 1,
+          fecha_vencimiento_lote: vacunas[index].fecha_vencimiento_lote,
+        };
+        fetch(url + "vacunas", {
+          method: "PUT",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => res.json());
+      }
+    }
+    cargarVistaGestionAnimal();
   }
 }
 
+// carga todo el contenido de los animales - Excelente
 async function cargaContenidoAnimal() {
   try {
     const url = `/vistas/${componentanimal}/index.html`;
@@ -269,6 +286,7 @@ async function cargaContenidoAnimal() {
   agregarSelectVacuna();
 }
 
+// Cargar el contenido de la tabla animales
 async function cargarVistaGestionAnimal() {
   cargaContenidoAnimal();
   try {
@@ -277,17 +295,13 @@ async function cargarVistaGestionAnimal() {
     const html = await fetch(url).then((r) => r.text());
     const animales = await obtenerAnimales();
     const nombrevacuna = {};
-    /* for (let index = 0; index < animales.length; index++) {
-      console.log(animales[index].vacunas);
-    } */
-    //console.log(animales);
     let filas = animales.map(
       (u, i) => `<tr>
                     <td>${u.nombre}</td>
                     <td style="max-width: 200px; overflow: auto; margin: 0px">${
                       u.detalles
                     }</td>
-                    <td>${u.fecha_nacimiento}</td>
+                    <td>${format(new Date(u.fecha_nacimiento))}</td>
                     <td>${u.genero ? "Macho" : "Hembra"}</td>
                     <td>${
                       u.madre_id == null
@@ -376,6 +390,8 @@ async function cargarVistaGestionAnimal() {
   }
 }
 
+// Cargando los datos de la base de datos como lo son usuario, vacunas
+// ,insumos, enfermedades y animales - Revisar detalles
 window.onload = async function () {
   const animales = await obtenerAnimales();
   const vacunas = await obtenerVacunas();
@@ -462,11 +478,11 @@ async function toBase64(file) {
   });
 }
 
+// insertar la foto subida al label de foto animal - Execelente
 async function convertImage(input, id) {
   const animalId = localStorage.getItem("idAnimal");
   const file = input.files[0];
   // localStorage.setItem("imagen",JSON.stringify(file));
-  return;
   if (file.type === "image/jpg" || file.type === "image/jpeg") {
     const path = "animales/" + animalId + "/profile.jpg";
     let storageRef = firebase.storage().ref();
@@ -492,7 +508,133 @@ async function convertImage(input, id) {
     });
   }
 }
-// Colocar la informacion en el modal de visualizacion detalles
+
+// Agregar foto al modal de detalles - Execelente
+async function agregarFotoAlModal() {
+  const id = localStorage.getItem("idAnimal");
+  const storageRef = firebase.storage().ref();
+  storageRef
+    .child(`animales/${id}/profile.jpg`)
+    .getDownloadURL()
+    .then((url) => {
+      document.querySelector("#foto-animal").setAttribute("src", url);
+    })
+    .catch((error) => {});
+  localStorage.removeItem("idAnimal");
+}
+
+// Agregar imagen al modal de agregaranimal - Execelente
+async function insertImage() {
+  var uploadFoto = document.querySelector("#fileUploadImgen").value;
+  var fileimg = document.querySelector("#fileUploadImgen").files;
+  // Swal.showLoading();
+  if (uploadFoto != "") {
+    var type = fileimg[0].type;
+    var name = fileimg[0].name;
+    if (type != "image/jpeg" && type != "image/jpg" && type != "image/png") {
+      Swal.fire({
+        icon: "error",
+        title: "Advertencia",
+        text: "Este archivo no es valido",
+      });
+      return false;
+    } else {
+      if (document.querySelector("#img")) {
+        document.querySelector("#img").remove();
+      }
+      var objeto_url = URL.createObjectURL(fileimg[0]);
+      document.querySelector(".prevPhoto").innerHTML =
+        "<img id='img' src=" + objeto_url + ">";
+      Swal.fire({
+        icon: "success",
+        title: "Listo",
+        text: "Foto carga con exito",
+      });
+    }
+  }
+}
+
+//Colocar en venta el animal - Excelente
+async function colocarVentaAnimal() {
+  const url = localStorage.getItem("api");
+  const idAnimal = localStorage.getItem("idEliminar");
+  const precio = document.querySelector("#precio").value;
+  console.log("ssssss");
+  Swal.showLoading();
+  let data = localStorage.getItem("animales");
+  if (!data) return;
+  data = JSON.parse(data);
+  const item = data.find((el) => el.id == idAnimal);
+  // console.log(item);
+  // console.log(idAnimal);
+  // console.log(data);
+  if (!item) return;
+  if (item.enVenta == true) {
+    let parametros = {
+      id: idAnimal,
+      enVenta: !item.enVenta,
+    };
+    await fetch(url + "animales", {
+      method: "PUT",
+      body: JSON.stringify(parametros),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // cargarVistaGestionAnimal();
+    Swal.fire({
+      icon: "success",
+      title: "Listo",
+      text: "El animal no esta en venta",
+    });
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Advertencia",
+      text: "no esta en venta",
+    });
+  }
+  if (item.enVenta == false) {
+    Swal.showLoading();
+    if (precio != "") {
+      let animal = {
+        id: item.id,
+        nombre: item.nombre,
+        detalles: item.detalles,
+        estado: item.estado,
+        genero: item.genero,
+        padre_id: item.padre_id,
+        madre_id: item.madre_id,
+        vacunas: item.vacunas,
+        create_at: item.create_at,
+        fecha_nacimiento: item.fecha_nacimiento,
+        enVenta: !item.enVenta,
+        precio: document.querySelector("#precio").value,
+      };
+      fetch(url + "animales", {
+        method: "PUT",
+        body: JSON.stringify(animal),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      Swal.fire({
+        icon: "success",
+        title: "Listo",
+        text: "Animal en venta con precio: " + new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(precio),
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Advertencia",
+        text: "Digite el campo precio",
+      });
+    }
+  }
+  cargarVistaGestionAnimal();
+}
+
+// Colocar la informacion en el modal de visualizacion detalles - Revisar Detalles
 async function guardarIdAnimal(idAnimal) {
   document
     .querySelector("#foto-animal")
@@ -542,63 +684,4 @@ async function guardarIdAnimal(idAnimal) {
                       </table>`;
   document.querySelector(`#vacunas-son`).innerHTML = tablaVacunas;
   await agregarFotoAlModal();
-}
-
-// Agregar foto al modal de detalles
-async function agregarFotoAlModal() {
-  const id = localStorage.getItem("idAnimal");
-  const storageRef = firebase.storage().ref();
-  storageRef
-    .child(`animales/${id}/profile.jpg`)
-    .getDownloadURL()
-    .then((url) => {
-      document.querySelector("#foto-animal").setAttribute("src", url);
-    })
-    .catch((error) => {});
-  localStorage.removeItem("idAnimal");
-}
-
-// Agregar foto al modal de agregar animal
-async function agregarFoto() {
-  document
-    .querySelector("#agregar-foto-animal")
-    .setAttribute(
-      "src",
-      "https://previews.123rf.com/images/godruma/godruma1710/godruma171000086/87282077-vista-de-perfil-animal-de-longitud-completa-de-bull-en-vaca-muscular-marr%C3%B3n.jpg?fj=1"
-    );
-  const id = localStorage.getItem("idAnimal");
-  const storageRef = firebase.storage().ref();
-  storageRef
-    .child(`animales/${id}/profile.jpg`)
-    .getDownloadURL()
-    .then((url) => {
-      document.querySelector("#agregar-foto-animal").setAttribute("src", url);
-    })
-    .catch((error) => {});
-}
-
-//Colocar en venta el animal
-async function colocarVentaAnimal() {
-  const url = localStorage.getItem("api");
-  const idAnimal = localStorage.getItem("idEliminar");
-  let data = localStorage.getItem("animales");
-  if (!data) return;
-  data = JSON.parse(data);
-  console.log(idAnimal);
-  const item = data.find((el) => el.id == idAnimal);
-  console.log(item);
-  console.log(data);
-  if (!item) return;
-  let parametros = {
-    id: idAnimal,
-    enVenta: !item.enVenta,
-  };
-  await fetch(url + "animales", {
-    method: "PUT",
-    body: JSON.stringify(parametros),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  cargarVistaGestionAnimal();
 }

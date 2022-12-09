@@ -1,13 +1,16 @@
-#botones-encabezado {
-    text-align: right;
-}
-
-#titulo {
-    text-align: center;
-}
 
 #nombre-animal-venta {
     text-align: center;
     text-transform: capitalize;
     font-weight: bold;
+}
+#botones-encabezado {
+    text-align: right;
+}
+#titulo {
+    text-align: center;
+}
+#fechaNacimineto-animal-venta{
+    float: right;
+    /* background-color: rgb(233, 143, 25); */
 }

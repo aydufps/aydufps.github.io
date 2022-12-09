@@ -13,7 +13,7 @@
         href="#ventana1"
         id="buton-añadir"
       >
-        <button class="float-right btn btn-primary" id="boton-añadir-animal" onclick="agregarFoto()">
+        <button class="float-right btn btn-primary" id="boton-añadir-animal" >
           Añadir +
         </button>
       </a>
@@ -41,13 +41,14 @@
           </button>
         </div>
         <div class="modal-body card container-fluid">
-          <div class="card container-fluid">
-            <div class="row" id="contenido-imagen">
+          <div class="card container-fluid ">
+            <div class="row prevPhoto mt-3" id="contenido-imagen">
+              <!-- <span class="delPhoto notBlock"></span> -->
               <img
                 class="card-img-top"
-                src=""
+                src="https://previews.123rf.com/images/godruma/godruma1710/godruma171000086/87282077-vista-de-perfil-animal-de-longitud-completa-de-bull-en-vaca-muscular-marr%C3%B3n.jpg?fj=1"
                 alt="foto del animal"
-                id="agregar-foto-animal"
+                id="img"
               />
             </div>
             <br />
@@ -59,16 +60,16 @@
                 <input
                   class="form-control"
                   type="file"
-                  name="fileUpload"
-                  id="fileUpload"
-                  onchange="convertImage(this, 'fileUploaded')"
+                  name="fileUploadImgen"
+                  id="fileUploadImgen"
+                  onchange="insertImage()"
                   style="display: none"
                   accept="image/jpg, image/jpeg"
                 />
                 <em class="fas fa-upload" for="fileUpload"></em>
               </label>
             </div>
-
+            <!-- <div id="form_alert"></div> -->
             <br />
             <div class="row">
               <div class="col-md-6 f0orm-group">
@@ -384,6 +385,11 @@
         </div>
         <div class="modal-body card container-fluid">
           <h5 id="detalle-venta"></h5>
+          <div class="col-md-6 form-floating mb-3" id="contenido-precio">
+            <input type="number" name="precio" id="precio" placeholder="precio"
+              class="col-md-4 form-control">
+            <label for="floatingInput">Precio</label>
+          </div>
           <div class="modal-footer">
             <button
               type="button"

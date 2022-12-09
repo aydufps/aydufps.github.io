@@ -35,16 +35,19 @@ body {
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
   color: #fff;
-  height: 60px;
+  /* height: 60px; */
+}
+#contenido-encabezado{
+  position: relative;
 }
 
-#titulo>h4 {
-  display: flex;
-  
+.contenido-titulo > h4 {
+  /* display: flex; */
+  margin-top: 15px;
   /* text-align: center; */
   /* margin-left: -210px; */
   font: bold 26px Arial, Helvetica, sans-serif;
-  /* line-height: 60px; */
+  /* line-height: 65px; */
   color: rgb(255, 255, 255);
   text-transform: uppercase;
 }
@@ -149,7 +152,8 @@ ul li {
 }
 
 .dt-wrapper {
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+    rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
   transition: 0.3s;
   border-radius: 6px;
 }
@@ -173,7 +177,7 @@ table {
 }
 
 * {
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   font-weight: bold;
 }
 
@@ -185,7 +189,7 @@ table {
   font-weight: bold;
 }
 
-#rolLabel{
+#rolLabel {
   color: #000;
 }
 
@@ -199,14 +203,33 @@ table {
   position: absolute;
 }
 
-#contenido-imagen{
+#contenido-imagen {
   margin: auto;
   width: 430px;
   height: 280px;
 }
 
-#animales-body{
+#animales-body {
   text-align: center;
   margin-left: auto;
   margin-top: auto;
 }
+
+.prevPhoto {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #CCC;
+  position: relative;
+  cursor: pointer;
+  /* background: url(../images/portada_categoria.png); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  margin: auto;
+}
+.prevPhoto img{
+  width: 100%;
+  height: 100%;
+  }

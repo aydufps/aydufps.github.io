@@ -20,7 +20,7 @@ async function guardarUsuario() {
     email: document.querySelector("#email-personal").value,
   };
   console.log(data);
-  let usuario = await fetch('https://aydfincas.herokuapp.com/usuarios', {
+  let usuario = await fetch(url + "usuarios", {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
