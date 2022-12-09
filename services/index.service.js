@@ -78,10 +78,6 @@ async function guardarAnimal() {
   var madre = document.querySelector("#select-madre").value;
   var fecha = document.getElementById("fecha-nacimiento-animal").value;
   console.log(genero);
-  if (nombre != '' && genero ) {
-    
-  }
-  return
   let data = {
     nombre: nombre,
     genero: genero == "true",
