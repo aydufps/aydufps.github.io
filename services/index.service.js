@@ -110,7 +110,7 @@ async function guardarAnimal() {
           Swal.fire({
             icon: "success",
             title: "Listo",
-            text: "Foto actualizada",
+            text: "Animal registrado con exito",
           });
         });
     } else {
