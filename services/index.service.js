@@ -423,44 +423,39 @@ window.onload = async function () {
     .addEventListener("click", cargarVistaGestionVacunas);
   document.querySelector("#animales").innerHTML = `<div class="card" >
       <div class="card">
-        <div class="card-header">
-          Animales registrados
-        </div>
+        
       <div class="card-body text-center">
         <h1 class="card-title">${animales.length}</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
+      <div class="card-header">
+          Animales registrados
+        </div>
       <div class="card-footer text-muted">
-        2 days ago
+      <p class="card-text">Se encuentran registradas en la base da datos</p>
       </div>
     </div>`;
   document.querySelector("#usuarios").innerHTML = `<div class="card" >
       <div class="card">
-        <div class="card-header">
-          Usuarios registrados
-        </div>
       <div class="card-body text-center">
         <h1 class="card-title">${usuario.length}</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
-      <div class="card-footer text-muted">
-        2 days ago
+      <div class="card-header">
+          Usuarios registrados
+        </div>
+        <div class="card-footer text-muted">
+      <p class="card-text">Se encuentran registradas en la base da datos</p>
       </div>
     </div>`;
   document.querySelector("#vacunas").innerHTML = `<div class="card" >
       <div class="card">
-        <div class="card-header">
-          Vacunas registrados
-        </div>
       <div class="card-body text-center">
         <h1 class="card-title">${cantidadVacunas}</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
+      <div class="card-header">
+          Vacunas registrados
+        </div>
       <div class="card-footer text-muted">
-        2 days ago
+      <p class="card-text">Se encuentran registradas en la base da datos</p>
       </div>
     </div>`;
 };
