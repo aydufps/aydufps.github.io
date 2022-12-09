@@ -21,10 +21,12 @@ async function borraridInsumo() {
 }
 
 async function eliminarInsumo() {
+  console.log("ssssss");
   const url = localStorage.getItem("api");
-  var id = localStorage.getItem("idEliminar");
+  var id = localStorage.getItem("idInsumo");
   const insumo = await obtenerInsumos();
   for (let index = 0; index < insumo.length; index++) {
+    console.log("aaa");
     if (insumo[index].id == id) {
       fetch(url + "insumo/" + id, {
         method: "DELETE",
